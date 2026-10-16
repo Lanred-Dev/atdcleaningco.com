@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { cubicOut } from "svelte/easing";
+    import { quartInOut } from "svelte/easing";
     import type { ClassValue } from "svelte/elements";
     import { fly } from "svelte/transition";
 
@@ -16,8 +16,9 @@
         class?: ClassValue;
     } = $props();
 
+    // Whenever the page is first loaded this prevents the word wrapper from animating to the width of the first word.
     let isInitialLabelHidden: boolean = $state.raw(false);
-    let labelWidths: number[] = $state([]);
+    let currentLabelWidth: number = $state.raw(0);
 
     function nextWord() {
         if (!isInitialLabelHidden) isInitialLabelHidden = true;
@@ -27,7 +28,6 @@
 
     onMount(() => {
         currentIndex = Math.floor(Math.random() * words.length);
-        labelWidths = Array(words.length).fill(0);
 
         const nextWordInterval = setInterval(nextWord, cycleInterval);
         return () => clearInterval(nextWordInterval);
@@ -36,27 +36,23 @@
 
 <span
     class={[
-        "relative inline-block h-full text-nowrap transition-[width] duration-500 ease-[cubic-bezier(0.65,0,0.35,1)]",
+        "relative inline-block h-full text-nowrap transition-[width] duration-500 ease-in-out",
         className,
     ]}
-    style:width={isInitialLabelHidden && labelWidths[currentIndex] > 0
-        ? `${labelWidths[currentIndex]}px`
-        : ""}
+    style:width={isInitialLabelHidden && currentLabelWidth > 0 ? `${currentLabelWidth}px` : ""}
 >
-    {#if !isInitialLabelHidden}
-        <span bind:clientWidth={labelWidths[currentIndex]}>{words[currentIndex]}</span>
-    {:else}
-        <!-- This span ensures that the parent maintains the correct line height -->
-        <span class="pointer-events-none invisible">.</span>
-    {/if}
+    <!-- This span ensures that the parent maintains the correct line height -->
+    <span class="pointer-events-none invisible">
+        {!isInitialLabelHidden ? words[currentIndex] : "."}
+    </span>
 
     {#each words as word, index (word)}
-        {#if index === currentIndex && isInitialLabelHidden}
+        {#if index === currentIndex}
             <span
                 class="y-center absolute left-0"
-                bind:clientWidth={labelWidths[index]}
-                in:fly={{ y: 20, duration: 500, delay: 100, easing: cubicOut }}
-                out:fly={{ y: -20, duration: 500, easing: cubicOut }}>{word}</span
+                bind:clientWidth={currentLabelWidth}
+                in:fly={{ y: 40, duration: 500, delay: 100, easing: quartInOut }}
+                out:fly={{ y: -40, duration: 500, easing: quartInOut }}>{word}</span
             >
         {/if}
     {/each}
