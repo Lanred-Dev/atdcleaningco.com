@@ -1,56 +1,11 @@
-# sv
+# Attention to Detail Cleaning Company
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+This repository contains the code for the Attention to Detail Cleaning Company website. The website is built using SvelteKit, Tailwind CSS, TypeScript, SQLite, Drizzle, and BetterAuth.
 
-## Creating a project
+### Creating a admin user
 
-If you're seeing this, you've probably already done this step. Congrats!
+To create an admin user, run the following command in your terminal:
 
-```sh
-# create a new project
-npx sv create my-app
+```bash
+npx auth@latest create-admin --email "name@example.com" --name "name" --role "staff"
 ```
-
-To recreate this project with the same configuration:
-
-```sh
-# recreate this project
-npx sv@1.1.1 create --template minimal --types ts --add prettier eslint tailwindcss="plugins:typography,forms" better-auth="demo:password" drizzle="database:sqlite+sqlite:better-sqlite3" --install npm ./
-```
-
-## Adding features
-
-Add features to your project with `sv add`:
-
-```sh
-npx sv add
-```
-
-For example, to add Tailwind CSS:
-
-```sh
-npx sv add tailwindcss
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```sh
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
