@@ -1,0 +1,176 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/forms";
+@plugin "@tailwindcss/typography";
+
+@theme {
+    --color-attention: #435738;
+    --color-attention-light: #5b6a53;
+    --color-alert: #e2584e;
+    --color-alert-light: #ed7f77;
+    --color-success: #81b496;
+    --color-warning: #de9e36;
+    --color-input: #f8f5ea;
+    --color-container: #ffffff;
+
+    --background-color-page: #f6f2e3;
+    --background-color-light: #f6f6ea;
+    --background-color-dark: #eae8d9;
+    --background-color-button-primary: #d8d6c6;
+    --background-color-button-primary-hover: #e2e0d2;
+
+    --text-color-placeholder: #57604c;
+    --text-color-title: rgb(17, 19, 15);
+    --text-color-primary: #3f4439;
+    --text-color-muted: #3f413c;
+    --text-color-input: #121212;
+    --text-color-bright: #f3f2ea;
+
+    --border-color-primary: #d8dccb;
+    --border-color-input: #dedfe3;
+
+    --radius-container: 22px;
+    --radius-input: 15px;
+    --radius-button: 10px;
+}
+
+@layer base {
+    @font-face {
+        font-family: "Outfit";
+        src: url("/fonts/Outfit.ttf") format("truetype");
+        font-style: normal;
+        font-display: swap;
+    }
+
+    html,
+    body {
+        @apply overscroll-none;
+    }
+
+    body {
+        font-family: Outfit, sans-serif;
+        @apply bg-page;
+    }
+}
+
+@utility cover-screen {
+    @apply h-dvh w-dvw;
+}
+
+@utility x-center {
+    @apply absolute left-1/2 -translate-x-1/2;
+}
+
+@utility y-center {
+    @apply absolute top-1/2 -translate-y-1/2;
+}
+
+@utility flex-center {
+    @apply flex items-center justify-center;
+}
+
+@utility break-word {
+    word-break: normal;
+    overflow-wrap: break-word;
+    hyphens: none;
+}
+
+@utility page-x-padding {
+    @apply px-8 md:px-[6vw] lg:px-[8vw] xl:px-[12vw];
+}
+
+@utility page-title {
+    @apply space-y-5 lg:space-y-8;
+
+    & h1.title,
+    & h2.title,
+    & h3.title,
+    & h4.title,
+    & h5.title,
+    & h6.title {
+        @apply text-3xl font-bold text-title sm:text-5xl lg:text-6xl;
+    }
+
+    & p.subtitle {
+        @apply text-lg md:text-xl;
+    }
+}
+
+@layer components {
+    form:has(input:invalid) button[type="submit"] {
+        @apply cursor-not-allowed opacity-50;
+    }
+
+    .button-attention,
+    .button-primary,
+    .button-danger {
+        @apply flex cursor-pointer items-center justify-center gap-1 rounded-button border border-input px-5 py-2 text-lg font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50;
+
+        & img,
+        & svg,
+        & [role="img"] {
+            @apply size-5 transition-transform duration-200;
+        }
+
+        &:hover img,
+        &:hover svg,
+        &:hover [role="img"] {
+            @apply scale-105;
+        }
+    }
+
+    .button-attention.tiny,
+    .button-primary.tiny,
+    .button-danger.tiny {
+        @apply px-3 py-2 text-base;
+
+        & img,
+        & svg,
+        & [role="img"] {
+            @apply size-5;
+        }
+    }
+
+    .button-attention.icon,
+    .button-primary.icon,
+    .button-danger.icon {
+        @apply rounded-full p-2;
+
+        & img,
+        & svg,
+        & [role="img"] {
+            @apply size-5;
+        }
+    }
+
+    .button-attention {
+        @apply bg-attention text-bright hover:bg-attention-light;
+
+        & img,
+        & svg,
+        & [role="img"] {
+            color: var(--text-color-bright);
+        }
+    }
+
+    .button-primary {
+        @apply bg-button-primary hover:bg-button-primary-hover;
+    }
+
+    .button-danger {
+        @apply bg-alert text-bright hover:bg-alert-light;
+
+        & img,
+        & svg,
+        & [role="img"] {
+            color: var(--text-color-bright);
+        }
+    }
+
+    .input-primary {
+        @apply field-sizing-content resize-none rounded-input border border-input bg-input px-5 break-word ring-0 transition-all duration-200 outline-none! focus-within:border-attention disabled:pointer-events-none disabled:opacity-50;
+    }
+
+    .container-primary {
+        @apply overflow-hidden rounded-container border border-primary bg-container p-4 shadow-sm;
+    }
+}
