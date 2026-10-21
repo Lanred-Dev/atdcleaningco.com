@@ -17,8 +17,8 @@
     } = $props();
 
     // Whenever the page is first loaded this prevents the word wrapper from animating to the width of the first word.
-    let isInitialLabelHidden: boolean = $state.raw(false);
-    let currentLabelWidth: number = $state.raw(0);
+    let isInitialLabelHidden = $state.raw<boolean>(false);
+    let currentLabelWidth = $state.raw<number>(0);
 
     function nextWord() {
         if (!isInitialLabelHidden) isInitialLabelHidden = true;
