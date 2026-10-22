@@ -3,18 +3,18 @@
 
     let {
         name,
-        label,
+        Label,
         children,
     }: {
         name: string;
-        label: Snippet;
+        Label: Snippet;
         children: Snippet;
     } = $props();
 </script>
 
 <div class="flex flex-col gap-0.5">
     <label for={name} class="pl-5 text-sm font-semibold text-muted">
-        {@render label()}
+        {@render Label()}
     </label>
 
     {@render children()}
