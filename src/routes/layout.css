@@ -26,7 +26,7 @@
     --text-color-bright: #f3f2ea;
 
     --border-color-primary: #d8dccb;
-    --border-color-input: #dedfe3;
+    --border-color-input: #c0c4bf;
 
     --radius-container: 22px;
     --radius-input: 15px;
@@ -49,6 +49,10 @@
     body {
         font-family: Outfit, sans-serif;
         @apply bg-page;
+    }
+
+    form:has(input:invalid) button[type="submit"] {
+        @apply cursor-not-allowed! opacity-50;
     }
 }
 
@@ -79,27 +83,18 @@
 }
 
 @utility page-title {
-    @apply space-y-5 lg:space-y-8;
+    @apply flex-center flex-col gap-y-3 bg-dark py-10 text-center md:py-14 lg:gap-y-5 lg:py-18;
 
-    & h1.title,
-    & h2.title,
-    & h3.title,
-    & h4.title,
-    & h5.title,
-    & h6.title {
-        @apply text-3xl font-bold text-title sm:text-5xl lg:text-6xl;
+    & h1.title {
+        @apply text-3xl font-bold text-title sm:text-4xl lg:text-5xl;
     }
 
     & p.subtitle {
-        @apply text-lg md:text-xl;
+        @apply max-w-xl text-lg md:text-xl;
     }
 }
 
 @layer components {
-    form:has(input:invalid) button[type="submit"] {
-        @apply cursor-not-allowed opacity-50;
-    }
-
     .button-attention,
     .button-primary,
     .button-danger {
@@ -164,6 +159,10 @@
         & [role="img"] {
             color: var(--text-color-bright);
         }
+    }
+
+    .button-link {
+        @apply text-muted transition-all duration-200 hover:font-medium hover:text-attention;
     }
 
     .input-primary {
