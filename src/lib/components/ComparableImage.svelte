@@ -66,6 +66,7 @@
     ontouchend={() => (isDragging = false)}
     onmousemove={(event) => {
         if (!isDragging) return;
+
         updateSliderPercentage(event.clientX);
     }}
     on:touchmove|nonpassive={(event) => {
@@ -78,7 +79,7 @@
 
 <div class="relative select-none" bind:this={Wrapper}>
     <div class={["relative h-full w-full overflow-hidden", className]}>
-        {#snippet image(isBefore: boolean)}
+        {#snippet Image(isBefore: boolean)}
             <div
                 class={["h-full w-full overflow-hidden", isBefore && "absolute top-0 left-0"]}
                 style:clip-path="inset(0 {isBefore ? 100 - sliderPercentage.current : 0} 0 {!isBefore
@@ -102,8 +103,8 @@
             </div>
         {/snippet}
 
-        {@render image(true)}
-        {@render image(false)}
+        {@render Image(true)}
+        {@render Image(false)}
     </div>
 
     <div class="y-center z-10 -translate-x-1/2" style:left="{sliderPercentage.current}%">
