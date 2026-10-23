@@ -19,7 +19,7 @@
 
     <Form method="post" action="?/signIn" class="w-full">
         <FormInput name="email">
-            {#snippet label()}
+            {#snippet Label()}
                 Email
             {/snippet}
 
@@ -33,7 +33,7 @@
         </FormInput>
 
         <FormInput name="password">
-            {#snippet label()}
+            {#snippet Label()}
                 Password
             {/snippet}
 
