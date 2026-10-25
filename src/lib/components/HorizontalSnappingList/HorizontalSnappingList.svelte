@@ -15,7 +15,7 @@
         autoScrollDelay?: number;
     } = $props();
 
-    let autoScrollInterval: ReturnType<typeof setTimeout> | undefined;
+    let autoScrollTimeout: ReturnType<typeof setTimeout> | undefined;
     let items = $state<HTMLElement[]>([]);
     let HorizontalSnappingListContext = $state<ReturnType<typeof getHorizontalSnappingListContext>>(
         {
@@ -23,16 +23,10 @@
                 items.push(item);
                 return items.length - 1;
             },
-            previousItem: () => {
-                previousItem();
-                startAutoScroll();
-            },
-            nextItem: () => {
-                nextItem();
-                startAutoScroll();
-            },
-            pauseAutoScroll: stopAutoScroll,
-            resumeAutoScroll: startAutoScroll,
+            previousItem,
+            nextItem,
+            stopAutoScroll,
+            startAutoScroll,
             currentItemIndex: 0,
             get itemCount() {
                 return items.length;
@@ -46,6 +40,8 @@
         HorizontalSnappingListContext.currentItemIndex =
             (HorizontalSnappingListContext.currentItemIndex + direction + items.length) %
             items.length;
+
+        startAutoScroll();
     }
 
     function nextItem() {
@@ -59,18 +55,16 @@
     function startAutoScroll() {
         stopAutoScroll();
 
-        autoScrollInterval = setInterval(() => {
-            if (items.length === 0) return;
+        if (document.hidden) return;
 
-            nextItem();
-        }, autoScrollDelay);
+        autoScrollTimeout = setTimeout(nextItem, autoScrollDelay);
     }
 
     function stopAutoScroll() {
-        if (autoScrollInterval === undefined) return;
+        if (autoScrollTimeout === undefined) return;
 
-        clearInterval(autoScrollInterval);
-        autoScrollInterval = undefined;
+        clearTimeout(autoScrollTimeout);
+        autoScrollTimeout = undefined;
     }
 
     onMount(() => {
@@ -81,6 +75,13 @@
         };
     });
 </script>
+
+<svelte:document
+    onvisibilitychange={() => {
+        if (document.hidden) stopAutoScroll();
+        else startAutoScroll();
+    }}
+/>
 
 <div class="relative w-full overflow-x-clip overflow-y-visible">
     {@render Controls?.()}

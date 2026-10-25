@@ -100,8 +100,8 @@
     style:opacity={animationSpring.current.opacity}
     style:display={animationSpring.current.opacity === 0 ? "none" : "block"}
     bind:this={ListItem}
-    onmouseenter={() => HorizontalSnappingListContext.pauseAutoScroll()}
-    onmouseleave={() => HorizontalSnappingListContext.resumeAutoScroll()}
+    onmouseenter={() => HorizontalSnappingListContext.stopAutoScroll()}
+    onmouseleave={() => HorizontalSnappingListContext.startAutoScroll()}
 >
     {@render children()}
 </li>

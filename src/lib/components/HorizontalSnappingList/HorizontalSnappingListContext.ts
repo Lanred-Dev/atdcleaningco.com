@@ -4,8 +4,8 @@ interface HorizontalSnappingListContext {
     nextItem: () => void;
     previousItem: () => void;
     registerItem: (item: HTMLElement) => number;
-    pauseAutoScroll: () => void;
-    resumeAutoScroll: () => void;
+    stopAutoScroll: () => void;
+    startAutoScroll: () => void;
     currentItemIndex: number;
     itemCount: number;
 }
