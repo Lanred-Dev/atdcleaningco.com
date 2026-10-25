@@ -32,7 +32,7 @@
 
         const boundingRect = Wrapper.getBoundingClientRect();
         const x = pointerDeviceX - boundingRect.left;
-        sliderPercentage.set(Math.max(0, Math.min(100, (x / boundingRect.width) * 100)), {
+        sliderPercentage.set(Math.max(5, Math.min(95, (x / boundingRect.width) * 100)), {
             instant: true,
         });
     }
@@ -45,8 +45,8 @@
             let newTarget: number =
                 oldTarget + (Math.random() > 0.5 ? idleBounceNudge : -idleBounceNudge);
 
-            if (newTarget < 0) newTarget = oldTarget + idleBounceNudge;
-            else if (newTarget > 100) newTarget = oldTarget - idleBounceNudge;
+            if (newTarget < 5) newTarget = oldTarget + idleBounceNudge;
+            else if (newTarget > 95) newTarget = oldTarget - idleBounceNudge;
 
             sliderPercentage.target = newTarget;
             idleBounceTimeout = setTimeout(() => {
@@ -107,17 +107,16 @@
         {@render Image(false)}
     </div>
 
-    <div class="y-center z-10 -translate-x-1/2" style:left="{sliderPercentage.current}%">
+    <div
+        class="y-center z-10 h-full w-0.5 -translate-x-1/2 bg-attention"
+        style:left="{sliderPercentage.current}%"
+    >
         <button
-            class="button-attention icon shadow-lg"
+            class="button-attention icon y-center x-center shadow-lg"
             onmousedown={() => (isDragging = true)}
             ontouchstart={() => (isDragging = true)}
         >
-            <Icon
-                icon="Arrows/LeftRight"
-                class="rotate-90"
-                style="color: var(--text-color-bright);"
-            />
+            <Icon icon="Arrows/LeftRight" class="rotate-90 text-bright" />
         </button>
     </div>
 </div>
