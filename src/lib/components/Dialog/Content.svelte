@@ -4,6 +4,7 @@
     import { getDialogContext } from "./DialogContext.ts";
     import type { ClassValue } from "svelte/elements";
     import portal from "#lib/utils/actions/portal.ts";
+    import type { HTMLAttributes } from "svelte/elements";
 
     let {
         children,
@@ -13,15 +14,19 @@
         children: Snippet;
         class?: ClassValue;
         [key: string]: unknown;
-    } = $props();
+    } & HTMLAttributes<HTMLDivElement> = $props();
 
     const DialogContext = getDialogContext();
-    let Content = $state.raw<HTMLElement | null>(null);
+    let ContentContainer = $state.raw<HTMLElement | null>(null);
 </script>
 
 <svelte:window
     onclick={(event) => {
-        if (DialogContext.isOpen && Content && !Content.contains(event.target as Node))
+        if (
+            DialogContext.isOpen &&
+            ContentContainer &&
+            !ContentContainer.contains(event.target as Node)
+        )
             DialogContext.isOpen = false;
     }}
 />
@@ -36,12 +41,9 @@
 
         <div class="y-center x-center z-10 flex-center w-full md:px-0">
             <div
-                class={[
-                    "container-primary relative flex-center flex-col",
-                    className,
-                ]}
+                class={["container-primary relative flex-center flex-col", className]}
                 in:fly={{ y: 20, duration: 200 }}
-                bind:this={Content}
+                bind:this={ContentContainer}
                 {...properties}
             >
                 {@render children()}
