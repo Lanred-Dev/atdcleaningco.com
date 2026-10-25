@@ -17,4 +17,7 @@ export const auth = betterAuth({
         window: 120,
         max: 5,
     },
+    advanced: {
+        cookiePrefix: "atd",
+    },
 });
