@@ -22,7 +22,7 @@
     {...properties}
 >
     {#if FormContext.isSubmitting}
-        <Loader size={1.75} color="black" />
+        <Loader class="size-7 text-black" />
     {:else}
         {@render children()}
     {/if}
