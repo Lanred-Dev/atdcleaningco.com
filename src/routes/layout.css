@@ -19,7 +19,7 @@
     --background-color-button-primary-hover: #e2e0d2;
 
     --text-color-placeholder: #57604c;
-    --text-color-title: rgb(17, 19, 15);
+    --text-color-title: #11130f;
     --text-color-primary: #3f4439;
     --text-color-muted: #3f413c;
     --text-color-input: #121212;
@@ -72,6 +72,10 @@
     @apply flex items-center justify-center;
 }
 
+@utility button-row {
+    @apply flex-center flex-wrap gap-x-4 gap-y-2;
+}
+
 @utility break-word {
     word-break: normal;
     overflow-wrap: break-word;
@@ -83,7 +87,7 @@
 }
 
 @utility page-title {
-    @apply flex-center flex-col gap-y-3 bg-dark py-10 text-center md:py-14 lg:gap-y-5 lg:py-18;
+    @apply mb-12 gap-y-3 bg-dark py-10 text-left not-md:page-x-padding md:flex-center md:flex-col md:py-14 lg:gap-y-5 lg:py-18 lg:text-center;
 
     & h1.title {
         @apply text-3xl font-bold text-title sm:text-4xl lg:text-5xl;
@@ -94,16 +98,41 @@
     }
 }
 
+@keyframes FlyIn {
+    0% {
+        transform: translateY(60%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@utility animate-delay-* {
+    animation-delay: calc(--value(integer) * 1ms);
+}
+
+@utility animate-duration-* {
+    animation-duration: calc(--value(integer) * 1ms);
+}
+
+@utility fly-in {
+    animation-name: FlyIn;
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+    animation-fill-mode: both;
+}
+
 @layer components {
     .button-attention,
     .button-primary,
     .button-danger {
-        @apply flex cursor-pointer items-center justify-center gap-1 rounded-button border border-input px-5 py-2 text-lg font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50;
+        @apply flex-center cursor-pointer gap-1 rounded-button border border-input px-5 py-2 text-lg font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50;
 
         & img,
         & svg,
         & [role="img"] {
-            @apply size-5 transition-transform duration-200;
+            @apply size-5 transition-transform duration-50;
         }
 
         &:hover img,
@@ -162,7 +191,13 @@
     }
 
     .button-link {
-        @apply text-muted transition-all duration-200 hover:font-medium hover:text-attention;
+        @apply flex-center gap-1 text-base text-muted transition-all duration-200 hover:font-medium hover:text-attention;
+
+        & img,
+        & svg,
+        & [role="img"] {
+            @apply size-5;
+        }
     }
 
     .input-primary {
