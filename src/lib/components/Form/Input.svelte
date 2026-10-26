@@ -13,7 +13,7 @@
 </script>
 
 <div class="flex flex-1 flex-col gap-0.5">
-    <label for={name} class="pl-5 text-sm font-semibold text-muted">
+    <label for={name} class="pl-5 text-sm text-muted">
         {@render Label()}
     </label>
 
