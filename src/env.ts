@@ -12,4 +12,11 @@ export const variables = defineEnvVars({
     RESEND_API_KEY: {
         description: "The API key for Resend, used for sending emails.",
     },
+    MAPBOX_ACCESS_TOKEN: {
+        public: true,
+        description: "The public access token for Mapbox, used for map rendering.",
+    },
+    INQUIRIES_EMAIL_SENDER: {
+        description: "The email address used as the sender for contact inquiries.",
+    },
 });
