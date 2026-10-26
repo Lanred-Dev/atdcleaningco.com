@@ -4,7 +4,7 @@
     let { class: className, ...properties }: HTMLAttributes<SVGSVGElement> = $props();
 </script>
 
-<svg class={["aspect-1 fill-none stroke-3", className]} viewBox="25 25 50 50" {...properties}>
+<svg class={["fill-none stroke-3", className]} viewBox="25 25 50 50" {...properties}>
     <circle cx="50" cy="50" r="20" />
 </svg>
 
