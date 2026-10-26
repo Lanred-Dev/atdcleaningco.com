@@ -7,14 +7,16 @@
         Title,
         includeCloseButton = true,
     }: {
-        Title: Snippet;
+        Title?: Snippet;
         includeCloseButton?: boolean;
     } = $props();
 </script>
 
-<div class="relative mb-2 flex-center w-full px-2 sm:px-5 md:px-11">
-    <p class="text-center text-3xl font-bold">{@render Title()}</p>
-</div>
+{#if Title}
+    <div class="relative mb-2 flex-center w-full px-2 sm:px-5 md:px-11">
+        <p class="flex-center flex-col text-center text-3xl font-bold">{@render Title()}</p>
+    </div>
+{/if}
 
 {#if includeCloseButton}
     <Trigger class="button-primary absolute top-2 right-2 size-10 rounded-full p-1.5">
