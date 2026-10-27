@@ -1,10 +1,10 @@
-# Attention to Detail Cleaning Company
+# atdcleaningco.com
 
-This repository contains the code for the Attention to Detail Cleaning Company website. The website is built using SvelteKit, Tailwind CSS, TypeScript, SQLite, Drizzle, and BetterAuth.
+This repository contains the code for the atdcleaningco.com website.
 
 ### Creating a admin user
 
-To create an admin user, run the following command in your terminal:
+To create an admin user, run the following command:
 
 ```bash
 npx auth@latest create-admin --email "name@example.com" --name "name" --role "staff"
