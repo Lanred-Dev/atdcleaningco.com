@@ -68,8 +68,6 @@
 </Dialog>
 
 <div class="mt-8">
-    <p class="mb-5">Showing results for {data.testimonials.length} testimonials</p>
-
     <ol class="flex flex-col gap-2">
         {#each data.testimonials as testimonial (testimonial.id)}
             <li>
@@ -80,7 +78,7 @@
                             <p class="text-muted">{testimonial.location}</p>
                         </div>
 
-                        <div class="flex-center gap-2">
+                        <div class="button-row">
                             <DialogTrigger
                                 class="button-primary icon"
                                 Context={EditDialogContext}
