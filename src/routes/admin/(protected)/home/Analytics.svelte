@@ -11,8 +11,8 @@
 
 <section class="mb-8">
     <div class="section-title">
-        <h2 class="title">Traffic Analytics</h2>
-        <p class="subtitle">A quick overview of the website's traffic over the past month.</p>
+        <h2 class="title">Analytics</h2>
+        <p class="subtitle">A quick overview of the website's traffic and where its from.</p>
     </div>
 
     <div class="relative">
