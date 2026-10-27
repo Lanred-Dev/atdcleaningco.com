@@ -22,7 +22,7 @@ export const actions: Actions = {
                 body: {
                     email,
                     password,
-                    callbackURL: "/auth/verification-success",
+                    callbackURL: "/admin",
                 },
             });
         } catch (error) {
@@ -31,7 +31,5 @@ export const actions: Actions = {
 
             return fail(500, { message: "Unexpected error" });
         }
-
-        return redirect(302, "/admin");
     },
 };
