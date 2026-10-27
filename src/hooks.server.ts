@@ -31,7 +31,8 @@ const handleAnalytics: Handle = async ({ event, resolve }) => {
                 .get();
 
             if (source) {
-                const userAgent = event.request.headers.get("user-agent")?.toString().trim() ?? "";
+                const userAgent =
+                    event.request.headers.get("user-agent")?.toString().trim() ?? "unknown";
                 db.insert(analyticsSchema)
                     .values({
                         userAgent,
@@ -39,11 +40,11 @@ const handleAnalytics: Handle = async ({ event, resolve }) => {
                         createdAt: new Date(),
                     })
                     .run();
-
-                event.url.searchParams.delete("source");
-                const cleanUrl = event.url.pathname + (event.url.search ? event.url.search : "");
-                redirect(303, cleanUrl);
             }
+
+            event.url.searchParams.delete("source");
+            const cleanedUrl: string = `${event.url.pathname}${event.url.search ?? ""}`;
+            redirect(303, cleanedUrl);
         }
     }
 
