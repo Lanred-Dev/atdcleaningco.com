@@ -12,7 +12,8 @@ export const load: PageServerLoad = async () => {
     const analyticsSources: AnalyticsSource[] = db
         .select()
         .from(analyticsSourceSchema)
-        .orderBy(desc(analyticsSourceSchema.createdAt)).all();
+        .orderBy(desc(analyticsSourceSchema.createdAt))
+        .all();
 
     return {
         analyticsSources,
@@ -31,7 +32,7 @@ export const actions: Actions = {
     },
     createAnalyticsSource: async ({ request }) => {
         const data = await request.formData();
-        const id = data.get("id")?.toString().trim();
+        const id = data.get("id")?.toString().trim().toLowerCase().replaceAll(" ", "_");
         const name = data.get("name")?.toString().trim();
 
         if (!name || !id) return fail(400, { error: "Missing required fields" });
