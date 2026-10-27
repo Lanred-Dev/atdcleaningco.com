@@ -1,0 +1,9 @@
+services:
+  atdcleaningco.com:
+    build: .
+    container_name: atdcleaningco.com
+    ports:
+      - "4000:4000"
+    env_file:
+      - .env
+    restart: always
