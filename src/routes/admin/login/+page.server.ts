@@ -4,9 +4,7 @@ import { APIError } from "better-auth/api";
 import type { PageServerLoad, Actions } from "./$types";
 
 export const load: PageServerLoad = (event) => {
-    if (event.locals.user) {
-        return redirect(302, "/admin");
-    }
+    if (event.locals.user) return redirect(302, "/admin");
 
     return {};
 };
@@ -14,8 +12,10 @@ export const load: PageServerLoad = (event) => {
 export const actions: Actions = {
     signIn: async (event) => {
         const formData = await event.request.formData();
-        const email = formData.get("email")?.toString() ?? "";
-        const password = formData.get("password")?.toString() ?? "";
+        const email = formData.get("email")?.toString();
+        const password = formData.get("password")?.toString();
+
+        if (!email || !password) return fail(500, { message: "Missing required fields" });
 
         try {
             await auth.api.signInEmail({
