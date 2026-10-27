@@ -8,10 +8,16 @@ export const testimonialsSchema = sqliteTable("testimonials", {
     createdAt: integer("createdAt", { mode: "timestamp" }).notNull(),
 });
 
+export const analyticsSourceSchema = sqliteTable("analyticsSource", {
+    id: text("id").primaryKey(),
+    name: text("name").notNull(),
+    createdAt: integer("createdAt", { mode: "timestamp" }).notNull(),
+});
+
 export const analyticsSchema = sqliteTable("analytics", {
     id: integer("id").primaryKey({ autoIncrement: true }),
-    path: text("path").notNull(),
     userAgent: text("userAgent"),
+    source: text("source").references(() => analyticsSourceSchema.id),
     createdAt: integer("createdAt", { mode: "timestamp" }).notNull(),
 });
 
@@ -81,6 +87,7 @@ export const contactInquiriesSchema = sqliteTable("contactInquiries", {
 export type ContactInquiry = typeof contactInquiriesSchema.$inferSelect;
 export type Testimonial = typeof testimonialsSchema.$inferSelect;
 export type Analytics = typeof analyticsSchema.$inferSelect;
+export type AnalyticsSource = typeof analyticsSourceSchema.$inferSelect;
 export type CompanyInfo = typeof companyInfoSchema.$inferSelect;
 
 export * from "./auth.schema";
