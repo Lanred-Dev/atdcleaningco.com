@@ -1,0 +1,46 @@
+import { db } from "#lib/server/db/index.ts";
+import type { PageServerLoad, Actions } from "./$types";
+import { eq } from "drizzle-orm";
+import { fail } from "@sveltejs/kit";
+import { companyInfoSchema, type CompanyInfo } from "#lib/server/db/schema.ts";
+import generateZipCodeGeoJson from "#lib/server/utils/map/generateZipCodeGeoJson.ts";
+
+export const load: PageServerLoad = async () => {
+    const companyInfo: CompanyInfo = (
+        await db.select().from(companyInfoSchema).where(eq(companyInfoSchema.id, 1))
+    )[0];
+
+    return {
+        companyInfo,
+    };
+};
+
+export const actions: Actions = {
+    updateServiceAreas: async ({ request }) => {
+        const data = await request.formData();
+        const serviceAreas = new Set(
+            data.getAll("serviceAreas").map((zip) => (zip as string).trim())
+        );
+
+        if (!serviceAreas || serviceAreas.size === 0)
+            return fail(400, { error: "Missing required fields" });
+
+        let geoJson: ReturnType<typeof generateZipCodeGeoJson>;
+
+        try {
+            geoJson = generateZipCodeGeoJson(serviceAreas);
+        } catch (error) {
+            return fail(400, { error });
+        }
+
+        db.update(companyInfoSchema)
+            .set({
+                serviceAreas: Array.from(serviceAreas),
+                serviceAreasGeoJson: geoJson,
+            })
+            .where(eq(companyInfoSchema.id, 1))
+            .run();
+
+        return { success: true };
+    },
+};
