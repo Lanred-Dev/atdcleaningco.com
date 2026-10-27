@@ -15,7 +15,7 @@ export const actions: Actions = {
         const email = formData.get("email")?.toString();
         const password = formData.get("password")?.toString();
 
-        if (!email || !password) return fail(500, { message: "Missing required fields" });
+        if (!email || !password) return fail(400, { message: "Missing required fields" });
 
         try {
             await auth.api.signInEmail({
