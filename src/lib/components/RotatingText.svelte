@@ -7,18 +7,19 @@
     let {
         words,
         currentIndex = $bindable(0),
-        cycleInterval = 3000,
+        cycleDuration = 3000,
         class: className,
     }: {
         words: string[];
         currentIndex?: number;
-        cycleInterval?: number;
+        cycleDuration?: number;
         class?: ClassValue;
     } = $props();
 
     // Whenever the page is first loaded this prevents the word wrapper from animating to the width of the first word.
     let isInitialLabelHidden = $state.raw<boolean>(false);
     let currentLabelWidth = $state.raw<number>(0);
+    let cycleInterval: ReturnType<typeof setInterval> | undefined;
 
     function nextWord() {
         if (!isInitialLabelHidden) isInitialLabelHidden = true;
@@ -26,13 +27,34 @@
         currentIndex = (currentIndex + 1) % words.length;
     }
 
+    function startNextWordInterval() {
+        stopNextWordInterval();
+        cycleInterval = setInterval(nextWord, cycleDuration);
+    }
+
+    function stopNextWordInterval() {
+        if (cycleInterval === undefined) return;
+
+        clearInterval(cycleInterval);
+        cycleInterval = undefined;
+    }
+
     onMount(() => {
         currentIndex = Math.floor(Math.random() * words.length);
+        startNextWordInterval();
 
-        const nextWordInterval = setInterval(nextWord, cycleInterval);
-        return () => clearInterval(nextWordInterval);
+        return () => {
+            stopNextWordInterval();
+        };
     });
 </script>
+
+<svelte:document
+    onvisibilitychange={() => {
+        if (document.hidden) stopNextWordInterval();
+        else startNextWordInterval();
+    }}
+/>
 
 <span
     class={[

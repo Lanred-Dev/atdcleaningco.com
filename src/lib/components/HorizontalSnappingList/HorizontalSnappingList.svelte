@@ -8,14 +8,14 @@
     let {
         children,
         Controls,
-        autoScrollDelay = 5000,
+        cycleDuration = 5000,
     }: {
         children: Snippet;
         Controls?: Snippet;
-        autoScrollDelay?: number;
+        cycleDuration?: number;
     } = $props();
 
-    let autoScrollTimeout: ReturnType<typeof setTimeout> | undefined;
+    let cycleInterval: ReturnType<typeof setInterval> | undefined;
     let items = $state<HTMLElement[]>([]);
     let HorizontalSnappingListContext = $state<ReturnType<typeof getHorizontalSnappingListContext>>(
         {
@@ -54,17 +54,14 @@
 
     function startAutoScroll() {
         stopAutoScroll();
-
-        if (document.hidden) return;
-
-        autoScrollTimeout = setTimeout(nextItem, autoScrollDelay);
+        cycleInterval = setInterval(nextItem, cycleDuration);
     }
 
     function stopAutoScroll() {
-        if (autoScrollTimeout === undefined) return;
+        if (cycleInterval === undefined) return;
 
-        clearTimeout(autoScrollTimeout);
-        autoScrollTimeout = undefined;
+        clearInterval(cycleInterval);
+        cycleInterval = undefined;
     }
 
     onMount(() => {
