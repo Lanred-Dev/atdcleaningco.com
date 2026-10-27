@@ -16,8 +16,10 @@ export const analyticsSourceSchema = sqliteTable("analyticsSource", {
 
 export const analyticsSchema = sqliteTable("analytics", {
     id: integer("id").primaryKey({ autoIncrement: true }),
-    userAgent: text("userAgent"),
-    source: text("source").references(() => analyticsSourceSchema.id),
+    userAgent: text("userAgent").notNull(),
+    source: text("source")
+        .references(() => analyticsSourceSchema.id)
+        .notNull(),
     createdAt: integer("createdAt", { mode: "timestamp" }).notNull(),
 });
 
