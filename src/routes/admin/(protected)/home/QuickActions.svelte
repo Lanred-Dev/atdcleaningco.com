@@ -10,7 +10,7 @@
         },
         {
             title: "Analytics Sources",
-            description: "View analytics sources.",
+            description: "Edit analytics sources.",
             href: "/admin/(protected)/edit/analytics/sources",
         },
         {
@@ -51,4 +51,3 @@
         {/each}
     </div>
 </section>
-
