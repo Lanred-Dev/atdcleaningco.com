@@ -15,6 +15,10 @@
     let viewDialogData = $state.raw<ContactInquiry | undefined>();
 </script>
 
+<svelte:head>
+    <title>Inquiries | Attention to Detail Cleaning Company</title>
+</svelte:head>
+
 <Dialog bind:Context={ViewDialogContext}>
     <DialogContent>
         <DialogContentHeader>
