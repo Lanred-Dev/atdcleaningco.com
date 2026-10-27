@@ -4,10 +4,11 @@ import type { PageServerLoad } from "./$types";
 import { desc } from "drizzle-orm";
 
 export const load: PageServerLoad = async () => {
-    const inquiries: ContactInquiry[] = await db
+    const inquiries: ContactInquiry[] = db
         .select()
         .from(contactInquiriesSchema)
-        .orderBy(desc(contactInquiriesSchema.createdAt));
+        .orderBy(desc(contactInquiriesSchema.createdAt))
+        .all();
 
     return {
         inquiries,

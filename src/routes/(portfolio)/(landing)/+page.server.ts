@@ -4,10 +4,11 @@ import { desc, eq } from "drizzle-orm";
 import { companyInfoSchema, type CompanyInfo, testimonialsSchema } from "#lib/server/db/schema.ts";
 
 export const load: PageServerLoad = async () => {
-    const testimonials = await db
+    const testimonials = db
         .select()
         .from(testimonialsSchema)
-        .orderBy(desc(testimonialsSchema.createdAt));
+        .orderBy(desc(testimonialsSchema.createdAt))
+        .all();
     const companyInfo: CompanyInfo = (
         await db.select().from(companyInfoSchema).where(eq(companyInfoSchema.id, 1))
     )[0];

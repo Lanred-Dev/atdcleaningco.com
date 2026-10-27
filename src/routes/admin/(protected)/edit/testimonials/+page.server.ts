@@ -5,10 +5,11 @@ import { desc, eq } from "drizzle-orm";
 import { fail } from "@sveltejs/kit";
 
 export const load: PageServerLoad = async () => {
-    const testimonials: Testimonial[] = await db
+    const testimonials: Testimonial[] = db
         .select()
         .from(testimonialsSchema)
-        .orderBy(desc(testimonialsSchema.createdAt));
+        .orderBy(desc(testimonialsSchema.createdAt))
+        .all();
 
     return {
         testimonials,

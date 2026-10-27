@@ -9,10 +9,10 @@ import { desc, eq } from "drizzle-orm";
 import { fail } from "@sveltejs/kit";
 
 export const load: PageServerLoad = async () => {
-    const analyticsSources: AnalyticsSource[] = await db
+    const analyticsSources: AnalyticsSource[] = db
         .select()
         .from(analyticsSourceSchema)
-        .orderBy(desc(analyticsSourceSchema.createdAt));
+        .orderBy(desc(analyticsSourceSchema.createdAt)).all();
 
     return {
         analyticsSources,
