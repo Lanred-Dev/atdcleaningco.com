@@ -20,4 +20,19 @@ export const auth = betterAuth({
     advanced: {
         cookiePrefix: "atd",
     },
+    user: {
+        fields: {
+            image: undefined,
+        },
+        additionalFields: {
+            notificationPreferences: {
+                type: "string",
+                required: true,
+                input: false,
+                defaultValue: JSON.stringify({
+                    inquiries: true,
+                }),
+            },
+        },
+    },
 });
