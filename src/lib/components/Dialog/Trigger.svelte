@@ -1,7 +1,6 @@
 <script lang="ts">
-    import type { Snippet } from "svelte";
     import { getDialogContext } from "./DialogContext.ts";
-    import type { HTMLAttributes } from "svelte/elements";
+    import type { HTMLButtonAttributes } from "svelte/elements";
 
     let {
         children,
@@ -9,10 +8,8 @@
         onclick,
         ...properties
     }: {
-        children: Snippet;
         Context?: ReturnType<typeof getDialogContext>;
-        onclick?: (event: MouseEvent) => void;
-    } & HTMLAttributes<HTMLButtonElement> = $props();
+    } & HTMLButtonAttributes = $props();
 </script>
 
 <button
@@ -25,5 +22,5 @@
     }}
     {...properties}
 >
-    {@render children()}
+    {@render children?.()}
 </button>

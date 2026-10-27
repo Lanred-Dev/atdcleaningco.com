@@ -1,7 +1,7 @@
 <script lang="ts">
-    import type { HTMLAttributes } from "svelte/elements";
+    import type { SVGAttributes } from "svelte/elements";
 
-    let { class: className, ...properties }: HTMLAttributes<SVGSVGElement> = $props();
+    let { class: className, ...properties }: SVGAttributes<SVGSVGElement> = $props();
 </script>
 
 <svg class={["fill-none stroke-3", className]} viewBox="25 25 50 50" {...properties}>

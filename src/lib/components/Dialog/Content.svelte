@@ -1,20 +1,10 @@
 <script lang="ts">
-    import type { Snippet } from "svelte";
     import { fade, fly } from "svelte/transition";
     import { getDialogContext } from "./DialogContext.ts";
-    import type { ClassValue } from "svelte/elements";
     import portal from "#lib/utils/actions/portal.ts";
     import type { HTMLAttributes } from "svelte/elements";
 
-    let {
-        children,
-        class: className,
-        ...properties
-    }: {
-        children: Snippet;
-        class?: ClassValue;
-        [key: string]: unknown;
-    } & HTMLAttributes<HTMLDivElement> = $props();
+    let { children, class: className, ...properties }: HTMLAttributes<HTMLDivElement> = $props();
 
     const DialogContext = getDialogContext();
     let ContentContainer = $state.raw<HTMLElement | null>(null);
@@ -46,7 +36,7 @@
                 bind:this={ContentContainer}
                 {...properties}
             >
-                {@render children()}
+                {@render children?.()}
             </div>
         </div>
     </div>

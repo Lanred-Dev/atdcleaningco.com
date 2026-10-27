@@ -1,9 +1,9 @@
 <!-- This component is a fork of https://github.com/rharkor/check-mark-animation -->
 
 <script lang="ts">
-    import type { HTMLAttributes } from "svelte/elements";
+    import type { SVGAttributes } from "svelte/elements";
 
-    let { class: className, ...properties }: HTMLAttributes<SVGSVGElement> = $props();
+    let { class: className, ...properties }: SVGAttributes<SVGSVGElement> = $props();
 </script>
 
 <svg

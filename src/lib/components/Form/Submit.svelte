@@ -2,7 +2,7 @@
     import type { Snippet } from "svelte";
     import { getFormContext } from "./FormContext.ts";
     import Loader from "#lib/components/Loader.svelte";
-    import type { HTMLAttributes } from "svelte/elements";
+    import type { HTMLButtonAttributes } from "svelte/elements";
 
     let {
         children,
@@ -10,7 +10,8 @@
         ...properties
     }: {
         children: Snippet;
-    } & HTMLAttributes<HTMLButtonElement> = $props();
+        [key: string]: unknown;
+    } & HTMLButtonAttributes = $props();
 
     const FormContext = getFormContext();
 </script>

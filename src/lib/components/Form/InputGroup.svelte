@@ -1,13 +1,9 @@
 <script lang="ts">
-    import type { Snippet } from "svelte";
+    import type { HTMLAttributes } from "svelte/elements";
 
-    let {
-        children,
-    }: {
-        children: Snippet;
-    } = $props();
+    let { children }: HTMLAttributes<HTMLDivElement> = $props();
 </script>
 
-<div class="flex flex-wrap gap-2">
-    {@render children()}
+<div class="button-row">
+    {@render children?.()}
 </div>

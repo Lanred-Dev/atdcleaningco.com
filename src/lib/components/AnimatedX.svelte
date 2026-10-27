@@ -1,15 +1,15 @@
 <!-- This component is a fork of https://github.com/rharkor/check-mark-animation but has been replaced with an X -->
 
 <script lang="ts">
-    import type { HTMLAttributes } from "svelte/elements";
+    import type { SVGAttributes } from "svelte/elements";
 
-    let { class: className, ...properties }: HTMLAttributes<SVGSVGElement> = $props();
+    let { class: className, ...properties }: SVGAttributes<SVGSVGElement> = $props();
 </script>
 
 <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 144 144"
-    class={["overflow-visible text-alert", className]}
+    class={["overflow-visible text-attention", className]}
     {...properties}
 >
     <circle class="semi-transparent" fill="currentColor" opacity="0.15" cx="72" cy="72" r="72" />
