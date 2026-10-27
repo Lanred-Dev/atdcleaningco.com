@@ -1,20 +1,34 @@
 <script lang="ts">
     import { getUserContext } from "./UserContext";
     import Logo from "#lib/assets/Logo.png";
-    import projectPackage from "../../../../package.json";
+    import { authClient } from "#lib/authClient.ts";
+    import { goto } from "$app/navigation";
+    import { resolve } from "$app/paths";
 
     const user = getUserContext();
 </script>
 
-<header
-    class="sticky top-0 left-0 z-40 flex items-center justify-between border-b border-primary bg-page/70 page-x-padding pt-4 pb-2 backdrop-blur-md"
->
+<header class="flex items-center justify-between page-x-padding pt-4 pb-2">
     <div class="flex-center gap-2">
         <img class="size-12 md:size-14" src={Logo} alt="Company Logo" />
 
-        <div>
-            <p class="leading-tight font-medium">Hello, {user.name}</p>
-            <p class="text-sm leading-tight text-muted">Project v{projectPackage.version}</p>
-        </div>
+        <p class="leading-none">
+            <span class="text-sm text-muted">Hello,</span>
+            <br />
+            <span class="font-medium">{user.name}</span>
+        </p>
     </div>
+
+    <button
+        class="button-attention tiny"
+        onclick={async () => {
+            await authClient.signOut({
+                fetchOptions: {
+                    onSuccess: () => {
+                        goto(resolve("/admin/login"));
+                    },
+                },
+            });
+        }}>Sign Out</button
+    >
 </header>
