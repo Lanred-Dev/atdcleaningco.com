@@ -9,9 +9,9 @@
             href: "/admin/(protected)/inquiries",
         },
         {
-            title: "Analytics Sources",
-            description: "Edit analytics sources.",
-            href: "/admin/(protected)/edit/analytics/sources",
+            title: "Marketing Campaigns",
+            description: "Manage marketing campaigns.",
+            href: "/admin/(protected)/edit/analytics/campaigns",
         },
         {
             title: "Edit Testimonials",
