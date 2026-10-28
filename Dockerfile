@@ -20,7 +20,4 @@ COPY --from=builder /atdcleaningco.com/build ./build
 COPY --from=builder /atdcleaningco.com/node_modules ./node_modules
 COPY package*.json ./
 
-# This is kinda of a workaround for creating admins via the CLI
-COPY src/lib/server/auth.ts ./
-
 CMD ["node", "build"]
