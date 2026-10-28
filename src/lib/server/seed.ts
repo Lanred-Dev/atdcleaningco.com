@@ -24,7 +24,7 @@ export function seedAdminUser() {
             email: ADMIN_EMAIL,
             password: ADMIN_PASSWORD,
             name: ADMIN_NAME,
-            role: "user",
+            role: "admin",
         },
     });
 }
@@ -40,6 +40,6 @@ export function seedMarketingCampaigns() {
             .onConflictDoNothing()
             .run();
     } catch {
-        console.error("Failed to insert default company info. It may already exist.");
+        console.error("Failed to insert default marketing campaigns. It may already exist.");
     }
 }
