@@ -126,7 +126,7 @@
 
             <FormInput name="email">
                 {#snippet Label()}
-                    Email Address
+                    Email
                 {/snippet}
 
                 <input
