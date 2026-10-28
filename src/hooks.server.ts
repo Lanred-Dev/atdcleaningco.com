@@ -3,10 +3,7 @@ import { building } from "$app/env";
 import { auth } from "#lib/server/auth.ts";
 import { svelteKitHandler } from "better-auth/svelte-kit";
 import { sequence } from "@sveltejs/kit/hooks";
-import { eq } from "drizzle-orm";
-import { analyticsSchema, analyticsSourceSchema } from "#lib/server/db/schema.ts";
-import { db } from "./lib/server/db";
-import { redirect } from "@sveltejs/kit";
+import { handle as analyticsHandle } from "#lib/server/analytics/handle.ts";
 
 const handleBetterAuth: Handle = async ({ event, resolve }) => {
     const session = await auth.api.getSession({ headers: event.request.headers });
@@ -19,36 +16,4 @@ const handleBetterAuth: Handle = async ({ event, resolve }) => {
     return svelteKitHandler({ event, resolve, auth, building });
 };
 
-const handleAnalytics: Handle = async ({ event, resolve }) => {
-    if (event.request.method === "GET" && !event.url.pathname.startsWith("/admin")) {
-        const sourceId = event.url.searchParams.get("source")?.toString().trim();
-
-        if (typeof sourceId === "string") {
-            const source = db
-                .select()
-                .from(analyticsSourceSchema)
-                .where(eq(analyticsSourceSchema.id, sourceId.toLowerCase()))
-                .get();
-
-            if (source) {
-                const userAgent =
-                    event.request.headers.get("user-agent")?.toString().trim() ?? "unknown";
-                db.insert(analyticsSchema)
-                    .values({
-                        userAgent,
-                        source: source.id,
-                        createdAt: new Date(),
-                    })
-                    .run();
-            }
-
-            event.url.searchParams.delete("source");
-            const cleanedUrl: string = `${event.url.pathname}${event.url.search ?? ""}`;
-            redirect(303, cleanedUrl);
-        }
-    }
-
-    return resolve(event);
-};
-
-export const handle: Handle = sequence(handleBetterAuth, handleAnalytics);
+export const handle: Handle = sequence(handleBetterAuth, analyticsHandle);
