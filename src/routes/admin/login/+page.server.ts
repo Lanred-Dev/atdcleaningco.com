@@ -2,18 +2,17 @@ import { fail, redirect } from "@sveltejs/kit";
 import { auth } from "#lib/server/auth.ts";
 import { APIError } from "better-auth/api";
 import type { PageServerLoad, Actions } from "./$types";
+import { resolve } from "$app/paths";
 
 export const load: PageServerLoad = (event) => {
-    if (event.locals.user) return redirect(302, "/admin");
-
-    return {};
+    if (event.locals.session) redirect(302, resolve("/admin/(protected)/(index)"));
 };
 
 export const actions: Actions = {
     signIn: async (event) => {
-        const formData = await event.request.formData();
-        const email = formData.get("email")?.toString();
-        const password = formData.get("password")?.toString();
+        const data = await event.request.formData();
+        const email = data.get("email")?.toString().trim();
+        const password = data.get("password")?.toString().trim();
 
         if (!email || !password) return fail(400, { message: "Missing required fields" });
 
@@ -22,7 +21,7 @@ export const actions: Actions = {
                 body: {
                     email,
                     password,
-                    callbackURL: "/admin",
+                    callbackURL: resolve("/admin/(protected)/(index)"),
                 },
             });
         } catch (error) {

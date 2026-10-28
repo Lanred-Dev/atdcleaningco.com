@@ -75,6 +75,8 @@
                     </DialogTrigger>
                 </div>
             </li>
+        {:else}
+            <li><p>There is no active inquiries.</p></li>
         {/each}
     </ol>
 </div>

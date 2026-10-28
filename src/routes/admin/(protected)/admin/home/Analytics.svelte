@@ -12,7 +12,7 @@
     } = $props();
 </script>
 
-<section class="mb-8">
+<section>
     <div class="section-title">
         <h2 class="title">Analytics</h2>
         <p class="subtitle">A quick overview of the website's traffic and where its from.</p>

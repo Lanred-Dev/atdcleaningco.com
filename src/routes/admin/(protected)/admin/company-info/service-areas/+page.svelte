@@ -18,7 +18,7 @@
         <input
             type="text"
             name="serviceAreas"
-            placeholder="12345"
+            placeholder="12345, 90000, 00000"
             required
             multiple
             class="input-primary"

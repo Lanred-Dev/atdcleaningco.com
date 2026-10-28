@@ -4,6 +4,7 @@
     import { authClient } from "#lib/authClient.ts";
     import { goto } from "$app/navigation";
     import { resolve } from "$app/paths";
+    import { page } from "$app/state";
 
     const user = getUserContext();
 </script>
@@ -20,9 +21,11 @@
             </p>
         </div>
 
-        <a class="button-link y-center x-center" href={resolve("/admin/(protected)/home")}
-            >Return to home</a
-        >
+        {#if !page.url.pathname.endsWith("/home")}
+            <a class="button-link y-center x-center" href={resolve("/admin/(protected)/(index)")}
+                >Return to home</a
+            >
+        {/if}
 
         <button
             class="button-attention tiny"
