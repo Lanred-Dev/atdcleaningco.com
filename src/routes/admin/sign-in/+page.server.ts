@@ -26,7 +26,7 @@ export const actions: Actions = {
             });
         } catch (error) {
             if (error instanceof APIError)
-                return fail(400, { message: error.message || "Signin failed" });
+                return fail(400, { message: error.message || "Sign in failed" });
 
             return fail(500, { message: "Unexpected error" });
         }
