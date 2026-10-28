@@ -7,6 +7,8 @@ import { db } from "#lib/server/db/index.ts";
 import { marketingCampaignsSchema } from "#lib/server/db/schema.ts";
 
 export function seedCompanyInfo() {
+    console.log("Seeding company info... (if needed)");
+
     try {
         db.insert(companyInfoSchema).values({}).onConflictDoNothing().run();
     } catch {
@@ -15,6 +17,8 @@ export function seedCompanyInfo() {
 }
 
 export function seedAdminUser() {
+    console.log("Seeding admin user... (if needed)");
+
     const doesAdminUserExist = db
         .select()
         .from(usersSchema)
@@ -34,6 +38,8 @@ export function seedAdminUser() {
 }
 
 export function seedMarketingCampaigns() {
+    console.log("Seeding marketing campaigns... (if needed)");
+
     try {
         db.insert(marketingCampaignsSchema)
             .values({
