@@ -19,5 +19,6 @@ WORKDIR /atdcleaningco.com
 COPY --from=builder /atdcleaningco.com/build ./build
 COPY --from=builder /atdcleaningco.com/node_modules ./node_modules
 COPY package*.json ./
+COPY --from=builder /atdcleaningco.com/drizzle ./drizzle
 
 CMD ["node", "build"]

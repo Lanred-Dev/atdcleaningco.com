@@ -5,7 +5,9 @@ import { svelteKitHandler } from "better-auth/svelte-kit";
 import { sequence } from "@sveltejs/kit/hooks";
 import { handle as analyticsHandle } from "#lib/server/analytics/handle.ts";
 import { seedCompanyInfo, seedAdminUser, seedMarketingCampaigns } from "#lib/server/seed.ts";
+import { runMigrations } from "#lib/server/db/migrate.js";
 
+runMigrations();
 seedMarketingCampaigns();
 seedAdminUser();
 seedCompanyInfo();
