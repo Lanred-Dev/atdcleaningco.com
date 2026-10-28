@@ -8,27 +8,33 @@
     const user = getUserContext();
 </script>
 
-<header class="flex items-center justify-between page-x-padding pt-4 pb-2">
-    <div class="flex-center gap-2">
-        <img class="size-12 md:size-14" src={Logo} alt="Company Logo" />
+<header class="page-x-padding pt-4 pb-2">
+    <div class="relative flex items-center justify-between">
+        <div class="flex-center gap-2">
+            <img class="size-12 md:size-14" src={Logo} alt="Company Logo" />
 
-        <p class="leading-none">
-            <span class="text-sm text-muted">Hello,</span>
-            <br />
-            <span class="font-medium">{user.name}</span>
-        </p>
-    </div>
+            <p class="leading-none">
+                <span class="text-sm text-muted">Hello,</span>
+                <br />
+                <span class="font-medium">{user.name}</span>
+            </p>
+        </div>
 
-    <button
-        class="button-attention tiny"
-        onclick={async () => {
-            await authClient.signOut({
-                fetchOptions: {
-                    onSuccess: () => {
-                        goto(resolve("/admin/login"));
+        <a class="button-link y-center x-center" href={resolve("/admin/(protected)/home")}
+            >Return to home</a
+        >
+
+        <button
+            class="button-attention tiny"
+            onclick={async () => {
+                await authClient.signOut({
+                    fetchOptions: {
+                        onSuccess: () => {
+                            goto(resolve("/admin/login"));
+                        },
                     },
-                },
-            });
-        }}>Sign Out</button
-    >
+                });
+            }}>Sign Out</button
+        >
+    </div>
 </header>
