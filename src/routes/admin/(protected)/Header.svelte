@@ -33,7 +33,7 @@
                 await authClient.signOut({
                     fetchOptions: {
                         onSuccess: () => {
-                            goto(resolve("/admin/login"));
+                            goto(resolve("/admin/sign-in"));
                         },
                     },
                 });

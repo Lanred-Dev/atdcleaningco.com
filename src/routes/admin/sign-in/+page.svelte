@@ -5,7 +5,7 @@
 </script>
 
 <svelte:head>
-    <title>Admin Login | Attention to Detail Cleaning Company</title>
+    <title>Admin Sign In | Attention to Detail Cleaning Company</title>
 </svelte:head>
 
 <div
@@ -13,7 +13,7 @@
 >
     <div class="flex-center w-full flex-col text-center">
         <img class="mb-2 size-20" src={Logo} alt="Company Logo" />
-        <h1 class="text-3xl font-bold text-title">Admin Login</h1>
+        <h1 class="text-3xl font-bold text-title">Admin Sign In</h1>
         <p class="text-lg">This page is intended for administrators only.</p>
     </div>
 

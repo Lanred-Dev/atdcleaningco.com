@@ -48,6 +48,6 @@ export const actions: Actions = {
             headers: event.request.headers,
         });
 
-        return redirect(302, "/admin/login");
+        return redirect(302, "/admin/sign-in");
     },
 };
