@@ -1,6 +1,6 @@
 import { ADMIN_EMAIL, ADMIN_PASSWORD, ADMIN_NAME } from "$app/env/private";
 import { auth } from "#lib/server/auth.ts";
-import { user } from "#lib/server/db/auth.schema.ts";
+import { user as usersSchema } from "#lib/server/db/auth.schema.ts";
 import { eq } from "drizzle-orm";
 import { companyInfoSchema } from "#lib/server/db/schema.ts";
 import { db } from "#lib/server/db/index.ts";
@@ -15,7 +15,11 @@ export function seedCompanyInfo() {
 }
 
 export function seedAdminUser() {
-    const doesAdminUserExist = db.select().from(user).where(eq(user.email, ADMIN_EMAIL)).get();
+    const doesAdminUserExist = db
+        .select()
+        .from(usersSchema)
+        .where(eq(usersSchema.email, ADMIN_EMAIL))
+        .get();
 
     if (doesAdminUserExist) return;
 
