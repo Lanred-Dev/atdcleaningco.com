@@ -19,4 +19,13 @@ export const variables = defineEnvVars({
     INQUIRIES_EMAIL_SENDER: {
         description: "The email address used as the sender for contact inquiries.",
     },
+    ADMIN_EMAIL: {
+        description: "The email address of the initial admin user for the server.",
+    },
+    ADMIN_PASSWORD: {
+        description: "The password for the initial admin user for the server.",
+    },
+    ADMIN_NAME: {
+        description: "The name of the initial admin user for the server.",
+    },
 });

@@ -4,6 +4,11 @@ import { auth } from "#lib/server/auth.ts";
 import { svelteKitHandler } from "better-auth/svelte-kit";
 import { sequence } from "@sveltejs/kit/hooks";
 import { handle as analyticsHandle } from "#lib/server/analytics/handle.ts";
+import { seedCompanyInfo, seedAdminUser, seedMarketingCampaigns } from "#lib/server/seed.ts";
+
+seedMarketingCampaigns();
+seedAdminUser();
+seedCompanyInfo();
 
 const handleBetterAuth: Handle = async ({ event, resolve }) => {
     const session = await auth.api.getSession({ headers: event.request.headers });
