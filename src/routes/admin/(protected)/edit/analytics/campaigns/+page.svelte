@@ -9,34 +9,36 @@
     } from "#lib/components/Dialog/index.ts";
     import Icon from "#lib/components/Icon.svelte";
     import { Form, FormInput, FormSubmit } from "#lib/components/Form/index.ts";
-    import type { AnalyticsSource } from "#lib/server/db/schema.ts";
+    import type { MarketingCampaign } from "#lib/server/db/schema.ts";
 
     const { data }: { data: PageServerData } = $props();
 
     let CreateDialogContext = $state.raw<ReturnType<typeof getDialogContext> | undefined>();
-    let URLGeneratorDialogContext = $state.raw<ReturnType<typeof getDialogContext> | undefined>();
-    let URLGeneratorDialogData = $state.raw<AnalyticsSource | undefined>();
-    let generatedURL = $state.raw<string | null>();
-    let rawURL = $state.raw<string>();
+    let CampaignURLGeneratorDialogContext = $state.raw<
+        ReturnType<typeof getDialogContext> | undefined
+    >();
+    let CampaignURLGeneratorDialogData = $state.raw<MarketingCampaign | undefined>();
+    let generatedCampaignURL = $state.raw<string | null>();
+    let targetCampaignURL = $state.raw<string>();
 </script>
 
 <svelte:head>
-    <title>Edit Analytics Sources | Attention to Detail Cleaning Company</title>
+    <title>Edit Marketing Campaigns | Attention to Detail Cleaning Company</title>
 </svelte:head>
 
 <Dialog bind:Context={CreateDialogContext}>
-    <DialogTrigger class="button-attention">Create New Analytics Source</DialogTrigger>
+    <DialogTrigger class="button-attention">Create New Campaign</DialogTrigger>
 
     <DialogContent class="w-full max-w-lg">
         <DialogContentHeader>
             {#snippet Title()}
-                Create New Analytics Source
+                Create New Campaign
             {/snippet}
         </DialogContentHeader>
 
         <Form
             method="post"
-            action="?/createAnalyticsSource"
+            action="?/create"
             class="w-full"
             aftersubmit={() => {
                 if (CreateDialogContext) CreateDialogContext.isOpen = false;
@@ -50,7 +52,7 @@
                 <input
                     type="text"
                     name="id"
-                    placeholder="Unique identifier for the source"
+                    placeholder="Unique identifier for the campaign"
                     required
                     class="input-primary"
                 />
@@ -75,19 +77,15 @@
     </DialogContent>
 </Dialog>
 
-<Dialog bind:Context={URLGeneratorDialogContext}>
+<Dialog bind:Context={CampaignURLGeneratorDialogContext}>
     <DialogContent class="w-full max-w-lg">
         <DialogContentHeader>
             {#snippet Title()}
-                Generating URL for source '{URLGeneratorDialogData?.name}'
+                Generating URL with campaign '{CampaignURLGeneratorDialogData?.name}'
             {/snippet}
         </DialogContentHeader>
 
         <div class="flex w-full flex-col gap-2">
-            {#if typeof generatedURL === "string"}
-                <p>{generatedURL}</p>
-            {/if}
-
             <FormInput name="url">
                 {#snippet Label()}
                     URL
@@ -99,46 +97,55 @@
                     placeholder="The base path (eg. https://atdcleaningco.com, https://atdcleaningco.com/contact, etc)"
                     required
                     class="input-primary"
-                    bind:value={rawURL}
+                    bind:value={targetCampaignURL}
                 />
             </FormInput>
 
             <button
                 class="button-attention w-full"
                 onclick={() => {
-                    if (!rawURL || !URLGeneratorDialogData?.id) return;
+                    if (!targetCampaignURL || !CampaignURLGeneratorDialogData?.id) return;
 
-                    const actualUrl = new URL(rawURL);
-                    actualUrl.searchParams.append("source", URLGeneratorDialogData.id);
-                    generatedURL = actualUrl.toString();
+                    const actualUrl = new URL(targetCampaignURL);
+                    actualUrl.searchParams.append("source", CampaignURLGeneratorDialogData.id);
+                    generatedCampaignURL = actualUrl.toString();
                 }}>Generate</button
             >
+
+            {#if typeof generatedCampaignURL === "string"}
+                <p>{generatedCampaignURL}</p>
+            {/if}
         </div>
     </DialogContent>
 </Dialog>
 
 <div class="mt-8">
     <ol class="flex flex-col gap-2">
-        {#each data.analyticsSources as analyticsSource (analyticsSource.id)}
+        {#each data.campaigns as campaign (campaign.id)}
             <li>
-                <div class="container-primary">
-                    <div class="mb-2 flex items-center justify-between">
+                <div
+                    class={[
+                        "container-primary",
+                        campaign.isCore && "cursor-not-allowed opacity-50",
+                    ]}
+                >
+                    <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-xl font-semibold text-title">{analyticsSource.name}</p>
-                            <p class="text-muted">{analyticsSource.id}</p>
+                            <p class="text-xl font-semibold text-title">{campaign.name}</p>
+                            <p class="text-muted">{campaign.id}</p>
                         </div>
 
-                        <div class="button-row">
+                        <div class={["button-row", campaign.isCore && "hidden"]}>
                             <DialogTrigger
                                 class="button-primary icon"
-                                Context={URLGeneratorDialogContext}
-                                onclick={() => (URLGeneratorDialogData = analyticsSource)}
+                                Context={CampaignURLGeneratorDialogContext}
+                                onclick={() => (CampaignURLGeneratorDialogData = campaign)}
                             >
                                 <Icon icon="URL" />
                             </DialogTrigger>
 
-                            <Form method="post" action="?/deleteAnalyticsSource" class="m-0">
-                                <input type="hidden" name="id" value={analyticsSource.id} />
+                            <Form method="post" action="?/delete" class="m-0">
+                                <input type="hidden" name="id" value={campaign.id} />
 
                                 <FormSubmit class="button-danger icon m-0!">
                                     <Icon icon="Delete" />

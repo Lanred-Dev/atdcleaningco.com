@@ -1,29 +1,35 @@
 import { redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
 import { auth } from "#lib/server/auth.ts";
-import { analyticsSchema } from "#lib/server/db/schema.ts";
+import { trafficSourcesSchema, marketingCampaignsSchema } from "#lib/server/db/schema.ts";
 import { sql, count } from "drizzle-orm";
 import { db } from "#lib/server/db/index.ts";
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = () => {
     const rows = db
         .select({
-            date: sql<string>`date(${analyticsSchema.createdAt}, 'unixepoch')`.as("date"),
-            source: analyticsSchema.source,
-            count: count(analyticsSchema.id),
+            date: sql<string>`date(${trafficSourcesSchema.createdAt}, 'unixepoch')`.as("date"),
+            source: trafficSourcesSchema.source,
+            count: count(trafficSourcesSchema.id),
         })
-        .from(analyticsSchema)
-        .groupBy(sql`date(${analyticsSchema.createdAt}, 'unixepoch')`, analyticsSchema.source)
-        .orderBy(sql`date(${analyticsSchema.createdAt}, 'unixepoch')`)
+        .from(trafficSourcesSchema)
+        .groupBy(
+            sql`date(${trafficSourcesSchema.createdAt}, 'unixepoch')`,
+            trafficSourcesSchema.source
+        )
+        .orderBy(sql`date(${trafficSourcesSchema.createdAt}, 'unixepoch')`)
         .all();
 
-    const sources = [...new Set(rows.map((analytics) => analytics.source ?? "unknown"))];
+    const marketingCampaigns = db
+        .select()
+        .from(marketingCampaignsSchema)
+        .all();
     const dateMap = new Map<string, Record<string, unknown>>();
 
     for (const { date, source, count } of rows) {
         if (!dateMap.has(date)) {
             const entry: Record<string, unknown> = { date };
-            for (const source of sources) entry[source] = 0;
+            for (const {id} of marketingCampaigns) entry[id] = 0;
             dateMap.set(date, entry);
         }
 
@@ -31,8 +37,8 @@ export const load: PageServerLoad = async () => {
     }
 
     return {
-        analytics: Array.from(dateMap.values()),
-        sources,
+        trafficSources: Array.from(dateMap.values()),
+        marketingCampaigns,
     };
 };
 

@@ -9,7 +9,7 @@
     <title>Edit Contact Info | Attention to Detail Cleaning Company</title>
 </svelte:head>
 
-<Form action="?/updateContactInfo">
+<Form action="?/update">
     <FormInput name="residentialPhone">
         {#snippet Label()}
             Residential Phone

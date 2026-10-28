@@ -33,7 +33,7 @@
         </DialogContentHeader>
 
         <TestimonialForm
-            action="?/createTestimonial"
+            action="?/create"
             aftersubmit={() => {
                 if (CreateDialogContext) CreateDialogContext.isOpen = false;
             }}
@@ -54,7 +54,7 @@
         </DialogContentHeader>
 
         <TestimonialForm
-            action="?/updateTestimonial"
+            action="?/update"
             data={editDialogData}
             aftersubmit={() => {
                 if (EditDialogContext) EditDialogContext.isOpen = false;
@@ -93,7 +93,7 @@
                                 <Icon icon="Edit" />
                             </DialogTrigger>
 
-                            <Form method="post" action="?/deleteTestimonial" class="m-0">
+                            <Form method="post" action="?/delete" class="m-0">
                                 <input type="hidden" name="id" value={testimonial.id} />
 
                                 <FormSubmit class="button-danger icon m-0!">

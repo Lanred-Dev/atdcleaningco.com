@@ -1,14 +1,14 @@
 import { db } from "#lib/server/db/index.ts";
-import { testimonialsSchema, type Testimonial } from "#lib/server/db/schema.ts";
+import { testimonialsSchema } from "#lib/server/db/schema.ts";
 import type { PageServerLoad, Actions } from "./$types";
-import { desc, eq } from "drizzle-orm";
+import { asc, eq } from "drizzle-orm";
 import { fail } from "@sveltejs/kit";
 
-export const load: PageServerLoad = async () => {
-    const testimonials: Testimonial[] = db
+export const load: PageServerLoad = () => {
+    const testimonials = db
         .select()
         .from(testimonialsSchema)
-        .orderBy(desc(testimonialsSchema.createdAt))
+        .orderBy(asc(testimonialsSchema.createdAt))
         .all();
 
     return {
@@ -17,7 +17,7 @@ export const load: PageServerLoad = async () => {
 };
 
 export const actions: Actions = {
-    deleteTestimonial: async ({ request }) => {
+    delete: async ({ request }) => {
         const data = await request.formData();
         const id = data.get("id") as string;
 
@@ -25,7 +25,7 @@ export const actions: Actions = {
 
         return { success: true };
     },
-    createTestimonial: async ({ request }) => {
+    create: async ({ request }) => {
         const data = await request.formData();
         const name = data.get("name")?.toString().trim();
         const location = data.get("location")?.toString().trim();
@@ -38,14 +38,12 @@ export const actions: Actions = {
                 name,
                 location,
                 text,
-                createdAt: new Date(),
-                id: crypto.randomUUID(),
             })
             .run();
 
         return { success: true };
     },
-    updateTestimonial: async ({ request }) => {
+    update: async ({ request }) => {
         const data = await request.formData();
         const id = data.get("id") as string;
         const name = data.get("name") as string;

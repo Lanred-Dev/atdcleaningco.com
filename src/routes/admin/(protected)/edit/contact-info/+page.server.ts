@@ -2,14 +2,12 @@ import { db } from "#lib/server/db/index.ts";
 import type { PageServerLoad, Actions } from "./$types";
 import { eq } from "drizzle-orm";
 import { fail } from "@sveltejs/kit";
-import { companyInfoSchema, type CompanyInfo } from "#lib/server/db/schema.ts";
+import { companyInfoSchema } from "#lib/server/db/schema.ts";
 import { validate as validateEmail } from "email-validator";
 import parsePhoneNumber from "libphonenumber-js";
 
-export const load: PageServerLoad = async () => {
-    const companyInfo: CompanyInfo = (
-        await db.select().from(companyInfoSchema).where(eq(companyInfoSchema.id, 1))
-    )[0];
+export const load: PageServerLoad = () => {
+    const companyInfo = db.select().from(companyInfoSchema).where(eq(companyInfoSchema.id, 1)).get()!
 
     return {
         companyInfo,
@@ -17,7 +15,7 @@ export const load: PageServerLoad = async () => {
 };
 
 export const actions: Actions = {
-    updateContactInfo: async ({ request }) => {
+    update: async ({ request }) => {
         const data = await request.formData();
         let residentialPhone = data.get("residentialPhone")?.toString();
         let commercialPhone = data.get("commercialPhone")?.toString();

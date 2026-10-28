@@ -10,7 +10,7 @@
     <title>Admin Home | Attention to Detail Cleaning Company</title>
 </svelte:head>
 
-<Analytics analytics={data.analytics} sources={data.sources} />
+<Analytics trafficSources={data.trafficSources} marketingCampaigns={data.marketingCampaigns} />
 <QuickActions />
 
 <style>

@@ -75,7 +75,7 @@
     <div class="w-full page-x-padding pb-12 lg:flex-center lg:pl-12">
         <Form
             method="post"
-            action="?/submitInquiry"
+            action="?/submit"
             class="w-full"
             aftersubmit={() => goto(resolve("/(portfolio)/contact/success"))}
         >

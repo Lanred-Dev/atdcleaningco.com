@@ -4,9 +4,12 @@
     import { scaleBand } from "d3-scale";
 
     let {
-        analytics,
-        sources,
-    }: { analytics: PageServerData["analytics"]; sources: PageServerData["sources"] } = $props();
+        trafficSources,
+        marketingCampaigns,
+    }: {
+        trafficSources: PageServerData["trafficSources"];
+        marketingCampaigns: PageServerData["marketingCampaigns"];
+    } = $props();
 </script>
 
 <section class="mb-8">
@@ -16,22 +19,28 @@
     </div>
 
     <div class="relative">
-        {#if analytics.length === 0}
+        {#if trafficSources.length === 0}
             <p class="y-center x-center">No analytics data available.</p>
         {/if}
 
         <BarChart
-            data={analytics.length > 0 ? analytics : [{ date: "No data" }]}
+            data={trafficSources.length > 0 ? trafficSources : [{ date: "No data" }]}
             x="date"
             xScale={scaleBand().padding(0.2)}
-            series={sources.length > 0
-                ? sources.map((source) => ({
-                      key: source,
-                  }))
-                : [{ key: "unknown" }]}
-            seriesLayout="group"
+            series={marketingCampaigns.map(({ id, name, displayColor }) => {
+                return {
+                    key: name,
+                    value: id,
+                    color: displayColor,
+                };
+            })}
+            seriesLayout="stack"
+            props={{
+                yAxis: { format: "integer" },
+            }}
             padding={defaultChartPadding({ left: 35, top: 25, right: 25, bottom: 35 })}
             height={300}
+            legend
         />
     </div>
 </section>

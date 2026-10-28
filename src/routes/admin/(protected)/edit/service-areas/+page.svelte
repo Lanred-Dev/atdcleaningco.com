@@ -9,7 +9,7 @@
     <title>Edit Service Areas | Attention to Detail Cleaning Company</title>
 </svelte:head>
 
-<Form action="?/updateServiceAreas">
+<Form action="?/update">
     <FormInput name="serviceAreas">
         {#snippet Label()}
             Service Areas
