@@ -22,7 +22,6 @@
         "@better-svelte-email/components": "^2.3.0",
         "@better-svelte-email/server": "^2.3.0",
         "@eslint/js": "^10.0.1",
-        "@sveltejs/adapter-auto": "^8.0.0",
         "@sveltejs/kit": "^3.1.0",
         "@sveltejs/vite-plugin-svelte": "^7.2.0",
         "@tailwindcss/forms": "^0.5.11",
@@ -59,6 +58,7 @@
         "#lib/*": "./src/lib/*"
     },
     "dependencies": {
+        "@sveltejs/adapter-node": "^6.0.0",
         "better-sqlite3": "^13.0.2"
     }
 }
