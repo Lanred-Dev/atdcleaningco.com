@@ -14,4 +14,7 @@ export default defineConfig({
             adapter: adapter(),
         }),
     ],
+    server: {
+        port: 4000,
+    },
 });
