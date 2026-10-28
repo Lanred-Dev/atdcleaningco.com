@@ -10,7 +10,7 @@ export const auth = betterAuth({
     baseURL: ORIGIN,
     secret: BETTER_AUTH_SECRET,
     database: drizzleAdapter(db, { provider: "sqlite" }),
-    emailAndPassword: { enabled: true, disableSignUp: false, requireEmailVerification: false },
+    emailAndPassword: { enabled: true, disableSignUp: true, requireEmailVerification: false },
     plugins: [admin(), sveltekitCookies(getRequestEvent)],
     rateLimit: {
         enabled: true,
