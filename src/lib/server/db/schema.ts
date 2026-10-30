@@ -1,6 +1,6 @@
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { sql } from "drizzle-orm";
-import generateRandomRGBColor from "#lib/utils/generateRandomRGBColor.ts";
+import randomRGB from "#lib/utils/color/randomRGB.ts";
 
 export const testimonialsSchema = sqliteTable("testimonials", {
     id: text("id")
@@ -20,11 +20,13 @@ export type NewTestimonial = typeof testimonialsSchema.$inferInsert;
 export const marketingCampaignsSchema = sqliteTable("marketingCampaigns", {
     id: text("id").primaryKey(),
     name: text("name").notNull(),
-    isCore: integer("isCore", { mode: "boolean" })
+    isCore: integer("is_core", { mode: "boolean" })
         .notNull()
         .default(sql`0`),
-    displayColor: text("displayColor").notNull().$defaultFn(() => generateRandomRGBColor()),
-    createdAt: integer("createdAt", { mode: "timestamp" })
+    displayColor: text("display_color")
+        .notNull()
+        .$defaultFn(() => randomRGB()),
+    createdAt: integer("created_at", { mode: "timestamp" })
         .notNull()
         .default(sql`(unixepoch())`),
 });
@@ -34,11 +36,11 @@ export type NewMarketingCampaign = typeof marketingCampaignsSchema.$inferInsert;
 
 export const trafficSourcesSchema = sqliteTable("trafficSources", {
     id: integer("id").primaryKey({ autoIncrement: true }),
-    userAgent: text("userAgent").notNull(),
+    userAgent: text("user_agent").notNull(),
     source: text("source")
-        .references(() => marketingCampaignsSchema.id)
+        .references(() => marketingCampaignsSchema.id, { onDelete: "cascade" })
         .notNull(),
-    createdAt: integer("createdAt", { mode: "timestamp" })
+    createdAt: integer("created_at", { mode: "timestamp" })
         .notNull()
         .default(sql`(unixepoch())`),
 });
@@ -50,8 +52,8 @@ export const companyInfoSchema = sqliteTable("companyInfo", {
     id: integer("id")
         .primaryKey()
         .$defaultFn(() => 1),
-    residentialPhone: text("residentialPhone").notNull().default("(000) 000-0000"),
-    commercialPhone: text("commercialPhone").notNull().default("(000) 000-0000"),
+    residentialPhone: text("residential_phone").notNull().default("(000) 000-0000"),
+    commercialPhone: text("commercial_phone").notNull().default("(000) 000-0000"),
     email: text("email").notNull().default("something@hello.com"),
     hours: text("hours", { mode: "json" })
         .$type<Record<string, [number, number]>>()
@@ -65,8 +67,8 @@ export const companyInfoSchema = sqliteTable("companyInfo", {
             saturday: [9, 14],
             sunday: [0, 0],
         }),
-    serviceAreas: text("serviceAreas", { mode: "json" }).$type<string[]>().notNull().default([]),
-    serviceAreasGeoJson: text("serviceAreasGeoJson", { mode: "json" })
+    serviceAreas: text("service_areas", { mode: "json" }).$type<string[]>().notNull().default([]),
+    serviceAreasGeoJson: text("service_areas_geojson", { mode: "json" })
         .$type<{
             type: "FeatureCollection";
             bounds: number[];
@@ -91,7 +93,7 @@ export const contactInquiriesSchema = sqliteTable("contactInquiries", {
     service: text("service"),
     frequency: text("frequency"),
     location: text("location"),
-    createdAt: integer("createdAt", { mode: "timestamp" })
+    createdAt: integer("created_at", { mode: "timestamp" })
         .notNull()
         .default(sql`(unixepoch())`),
 });
@@ -99,4 +101,4 @@ export const contactInquiriesSchema = sqliteTable("contactInquiries", {
 export type ContactInquiry = typeof contactInquiriesSchema.$inferSelect;
 export type NewContactInquiry = typeof contactInquiriesSchema.$inferInsert;
 
-export * from "./auth.schema";
+export * from "./auth.schema"
