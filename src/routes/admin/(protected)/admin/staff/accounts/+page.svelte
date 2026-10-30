@@ -57,6 +57,7 @@
                     name="email"
                     placeholder="myemail@example.com"
                     required
+                    autocomplete="username"
                     class="input-primary"
                 />
             </FormInput>
@@ -69,8 +70,8 @@
                 <input
                     type="password"
                     name="password"
-                    placeholder="securedpass"
-                    required
+                    placeholder="securepass"
+                    autocomplete="new-password"
                     class="input-primary"
                 />
             </FormInput>
