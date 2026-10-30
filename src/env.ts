@@ -5,10 +5,6 @@ export const variables = defineEnvVars({
     ORIGIN: {
         description: "The app origin (base URL), e.g. `http://localhost:5173`.",
     },
-    BETTER_AUTH_SECRET: {
-        description:
-            "Secret used to sign tokens. For production use 32 characters generated with high entropy. See [Better Auth installation](https://www.better-auth.com/docs/installation).",
-    },
     RESEND_API_KEY: {
         description: "The API key for Resend, used for sending emails.",
     },
@@ -28,4 +24,7 @@ export const variables = defineEnvVars({
     ADMIN_NAME: {
         description: "The name of the initial admin user for the server.",
     },
+    SHA256_ENCRYPTION_TOKEN: {
+        description: "The token used to verify authenticity for session token."
+    }
 });

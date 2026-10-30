@@ -1,26 +1,13 @@
 import type { Handle } from "@sveltejs/kit/hooks";
-import { building } from "$app/env";
-import { auth } from "#lib/server/auth.ts";
-import { svelteKitHandler } from "better-auth/svelte-kit";
 import { sequence } from "@sveltejs/kit/hooks";
 import { handle as analyticsHandle } from "#lib/server/analytics/handle.ts";
-import { seedCompanyInfo, seedAdminUser, seedMarketingCampaigns } from "#lib/server/seed.ts";
-import { runMigrations } from "#lib/server/db/migrate.js";
+import { handle as authHandle } from "#lib/server/auth/handle.ts";
+import { seedCompanyInfo, seedAdminUser, seedMarketingCampaigns } from "#lib/server/db/seed.ts";
+import { runMigrations } from "#lib/server/db/migrate.ts";
 
 runMigrations();
 seedMarketingCampaigns();
 seedAdminUser();
 seedCompanyInfo();
 
-const handleBetterAuth: Handle = async ({ event, resolve }) => {
-    const session = await auth.api.getSession({ headers: event.request.headers });
-
-    if (session) {
-        event.locals.session = session.session;
-        event.locals.user = session.user;
-    }
-
-    return svelteKitHandler({ event, resolve, auth, building });
-};
-
-export const handle: Handle = sequence(handleBetterAuth, analyticsHandle);
+export const handle: Handle = sequence(authHandle, analyticsHandle);

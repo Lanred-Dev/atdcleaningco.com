@@ -15,8 +15,7 @@
         "db:push": "drizzle-kit push",
         "db:generate": "drizzle-kit generate",
         "db:migrate": "drizzle-kit migrate",
-        "db:studio": "drizzle-kit studio",
-        "auth:schema": "auth generate --config src/lib/server/auth.ts --output src/lib/server/db/auth.schema.ts --yes"
+        "db:studio": "drizzle-kit studio"
     },
     "devDependencies": {
         "@better-svelte-email/components": "^2.3.0",
@@ -31,8 +30,8 @@
         "@types/better-sqlite3": "^9.6.0",
         "@types/d3-scale": "^4.0.9",
         "@types/node": "^24",
-        "auth": "^1.7.14",
-        "better-auth": "^1.6.24",
+        "argon2": "^0.45.1",
+        "date-fns": "^4.4.0",
         "drizzle-kit": "^0.31.11",
         "drizzle-orm": "^0.45.2",
         "email-validator": "^2.0.4",
