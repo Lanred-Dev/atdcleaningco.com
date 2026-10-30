@@ -32,7 +32,7 @@
 
         const boundingRect = Wrapper.getBoundingClientRect();
         const x = pointerDeviceX - boundingRect.left;
-        sliderPercentage.set(Math.max(5, Math.min(95, (x / boundingRect.width) * 100)), {
+        sliderPercentage.set(Math.max(8, Math.min(92, (x / boundingRect.width) * 100)), {
             instant: true,
         });
     }
