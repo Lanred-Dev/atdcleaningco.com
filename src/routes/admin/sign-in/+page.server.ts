@@ -1,8 +1,7 @@
 import { fail, redirect } from "@sveltejs/kit";
-import { auth } from "#lib/server/auth.ts";
-import { APIError } from "better-auth/api";
 import type { PageServerLoad, Actions } from "./$types";
 import { resolve } from "$app/paths";
+import { signInWithEmail } from "#lib/server/auth/index.ts";
 
 export const load: PageServerLoad = (event) => {
     if (event.locals.session) redirect(302, resolve("/admin/(protected)/(index)"));
@@ -17,18 +16,12 @@ export const actions: Actions = {
         if (!email || !password) return fail(400, { message: "Missing required fields" });
 
         try {
-            await auth.api.signInEmail({
-                body: {
-                    email,
-                    password,
-                    callbackURL: resolve("/admin/(protected)/(index)"),
-                },
-            });
+            await signInWithEmail(email, password, event.cookies);
         } catch (error) {
-            if (error instanceof APIError)
-                return fail(400, { message: error.message || "Sign in failed" });
-
-            return fail(500, { message: "Unexpected error" });
+            const message = error instanceof Error ? error.message : "Invalid credentials";
+            return fail(400, { message });
         }
+
+        redirect(302, resolve("/admin/(protected)/(index)"));
     },
 };

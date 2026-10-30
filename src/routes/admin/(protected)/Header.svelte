@@ -1,7 +1,6 @@
 <script lang="ts">
     import { getUserContext } from "./UserContext";
     import Logo from "#lib/assets/Logo.png";
-    import { authClient } from "#lib/authClient.ts";
     import { goto } from "$app/navigation";
     import { resolve } from "$app/paths";
     import { page } from "$app/state";
@@ -30,13 +29,7 @@
         <button
             class="button-attention tiny"
             onclick={async () => {
-                await authClient.signOut({
-                    fetchOptions: {
-                        onSuccess: () => {
-                            goto(resolve("/admin/sign-in"));
-                        },
-                    },
-                });
+                goto(resolve("/admin/(protected)/sign-out"));
             }}>Sign Out</button
         >
     </div>

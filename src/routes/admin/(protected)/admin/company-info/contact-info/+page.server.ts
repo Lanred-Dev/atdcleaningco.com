@@ -7,7 +7,11 @@ import { validate as validateEmail } from "email-validator";
 import parsePhoneNumber from "libphonenumber-js";
 
 export const load: PageServerLoad = () => {
-    const companyInfo = db.select().from(companyInfoSchema).where(eq(companyInfoSchema.id, 1)).get()!
+    const companyInfo = db
+        .select()
+        .from(companyInfoSchema)
+        .where(eq(companyInfoSchema.id, 1))
+        .get()!;
 
     return {
         companyInfo,
@@ -31,7 +35,7 @@ export const actions: Actions = {
 
         if (!parsedResidentialPhone?.isValid())
             return fail(400, { error: "Invalid residential phone number" });
-        else residentialPhone = parsedResidentialPhone.format("E.164") ?? "";
+        else residentialPhone = parsedResidentialPhone.formatNational();
 
         const parsedCommercialPhone = parsePhoneNumber(commercialPhone, "US");
 

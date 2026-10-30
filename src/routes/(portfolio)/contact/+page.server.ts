@@ -1,12 +1,11 @@
 import type { PageServerLoad, Actions } from "./$types";
 import { db } from "#lib/server/db/index.ts";
-import { contactInquiriesSchema, companyInfoSchema } from "#lib/server/db/schema.ts";
+import { contactInquiriesSchema, companyInfoSchema, usersSchema } from "#lib/server/db/schema.ts";
 import { validate as validateEmail } from "email-validator";
 import { fail } from "@sveltejs/kit";
-import { eq, sql } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import parsePhoneNumber from "libphonenumber-js";
 import { resend, emailRenderer } from "#lib/server/resend.ts";
-import { user as userSchema } from "#lib/server/db/auth.schema.ts";
 import { INQUIRIES_EMAIL_SENDER } from "$app/env/private";
 import InquiryThankYou from "#lib/server/emails/customer/InquiryThankYou.svelte";
 import NewInquiry from "#lib/server/emails/admin/NewInquiry.svelte";
@@ -71,16 +70,22 @@ export const actions: Actions = {
             html: await emailRenderer(InquiryThankYou, { props: { name: firstName } }),
         });
 
-        await resend.emails.send({
-            from: INQUIRIES_EMAIL_SENDER,
-            to: db
-                .select({ email: userSchema.email })
-                .from(userSchema)
-                .where(sql`json_extract(${userSchema.notificationPreferences}, '$.inquiries') = 1`)
-                .all()
-                .map((row) => row.email),
-            subject: `New Inquiry Received [Ref: ${inquiry.id}]`,
-            html: await emailRenderer(NewInquiry, { props: { name: fullName } }),
+        const renderedNewInquiryEmail = await emailRenderer(NewInquiry, {
+            props: { name: fullName },
         });
+        const adminRecipients = db
+            .select({ email: usersSchema.email })
+            .from(usersSchema)
+            .where(eq(usersSchema.inquiryNotifcationPreference, true))
+            .all();
+
+        await resend.batch.send(
+            adminRecipients.map((recipient) => ({
+                from: INQUIRIES_EMAIL_SENDER,
+                to: recipient.email,
+                subject: `New Inquiry Received [Ref: ${inquiry.id}]`,
+                html: renderedNewInquiryEmail,
+            }))
+        );
     },
 };

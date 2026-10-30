@@ -1,5 +1,5 @@
 import { db } from "#lib/server/db/index.ts";
-import { marketingCampaignsSchema, trafficSourcesSchema } from "#lib/server/db/schema.ts";
+import { marketingCampaignsSchema } from "#lib/server/db/schema.ts";
 import type { PageServerLoad, Actions } from "./$types";
 import { asc, eq } from "drizzle-orm";
 import { fail } from "@sveltejs/kit";
@@ -21,7 +21,6 @@ export const actions: Actions = {
         const data = await request.formData();
         const id = data.get("id") as string;
 
-        db.delete(trafficSourcesSchema).where(eq(trafficSourcesSchema.source, id)).run();
         db.delete(marketingCampaignsSchema)
             .where(eq(marketingCampaignsSchema.id, id))
             .run();

@@ -1,7 +1,8 @@
+import { createAccount } from "#lib/server/auth/accounts.ts";
+import { createUser, deleteUser } from "#lib/server/auth/users.ts";
+import { usersSchema } from "#lib/server/db/auth.schema.ts";
 import { db } from "#lib/server/db/index.ts";
 import type { PageServerLoad, Actions } from "./$types";
-import { user as usersSchema } from "#lib/server/db/auth.schema.ts";
-import { auth } from "#lib/server/auth.ts";
 import { fail } from "@sveltejs/kit";
 
 export const load: PageServerLoad = () => {
@@ -17,14 +18,12 @@ export const actions: Actions = {
         const data = await request.formData();
         const id = data.get("id") as string;
 
-        await auth.api.removeUser({
-            body: {
-                userId: id,
-            },
-            headers: request.headers,
-        });
-
-        return { success: true };
+        try {
+            deleteUser(id);
+            return { success: true };
+        } catch {
+            return fail(400, "Failed to delete user");
+        }
     },
     create: async ({ request }) => {
         const data = await request.formData();
@@ -36,13 +35,16 @@ export const actions: Actions = {
         if (!name || !email || !password || !role)
             return fail(400, { error: "Missing required fields" });
 
-        await auth.api.createUser({
-            body: {
-                email,
-                password,
-                name,
-                role,
-            },
+        const user = createUser({
+            email,
+            name,
+            role,
+        });
+
+        await createAccount({
+            provider: "credential",
+            password,
+            user: user.id,
         });
 
         return { success: true };
