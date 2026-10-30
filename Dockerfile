@@ -24,10 +24,10 @@ FROM node:24-slim AS production
 
 WORKDIR /atdcleaningco.com
 
-COPY --from=builder ./build ./build
-COPY --from=prod-deps ./node_modules ./node_modules
-COPY --from=builder ./drizzle ./drizzle
-COPY --from=builder ./data ./data
-COPY --from=builder ./package*.json ./
+COPY --from=builder /atdcleaningco.com/build ./build
+COPY --from=prod-deps /atdcleaningco.com/node_modules ./node_modules
+COPY --from=builder /atdcleaningco.com/drizzle ./drizzle
+COPY --from=builder /atdcleaningco.com/data ./data
+COPY --from=builder /atdcleaningco.com/package*.json ./
 
 CMD ["node", "build"]
