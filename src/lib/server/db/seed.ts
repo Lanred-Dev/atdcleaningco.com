@@ -1,10 +1,9 @@
 import { ADMIN_EMAIL, ADMIN_PASSWORD, ADMIN_NAME } from "$app/env/private";
-import { auth } from "#lib/server/auth.ts";
-import { user as usersSchema } from "#lib/server/db/auth.schema.ts";
-import { eq } from "drizzle-orm";
 import { companyInfoSchema } from "#lib/server/db/schema.ts";
 import { db } from "#lib/server/db/index.ts";
 import { marketingCampaignsSchema } from "#lib/server/db/schema.ts";
+import { getUserByEmail, createUser } from "#lib/server/auth/users.ts";
+import { createAccount } from "#lib/server/auth/accounts.ts";
 
 export function seedCompanyInfo() {
     console.log("Seeding company info... (if needed)");
@@ -16,24 +15,23 @@ export function seedCompanyInfo() {
     }
 }
 
-export function seedAdminUser() {
-    console.log("Seeding admin user... (if needed)");
-
-    const doesAdminUserExist = db
-        .select()
-        .from(usersSchema)
-        .where(eq(usersSchema.email, ADMIN_EMAIL))
-        .get();
+export async function seedAdminUser() {
+    const doesAdminUserExist = getUserByEmail(ADMIN_EMAIL) !== undefined;
 
     if (doesAdminUserExist) return;
 
-    auth.api.createUser({
-        body: {
-            email: ADMIN_EMAIL,
-            password: ADMIN_PASSWORD,
-            name: ADMIN_NAME,
-            role: "admin",
-        },
+    console.info("Seeding admin user...");
+
+    const user = createUser({
+        email: ADMIN_EMAIL,
+        name: ADMIN_NAME,
+        role: "admin",
+    });
+
+    await createAccount({
+        provider: "credential",
+        password: ADMIN_PASSWORD,
+        user: user.id,
     });
 }
 
