@@ -17,4 +17,7 @@ export default defineConfig({
     server: {
         port: 4100,
     },
+    ssr: {
+        external: ["argon2", "better-sqlite3"],
+    },
 });
