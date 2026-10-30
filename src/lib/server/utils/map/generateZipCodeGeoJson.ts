@@ -1,21 +1,5 @@
 import { type CompanyInfo } from "#lib/server/db/schema.ts";
-import fs from "fs";
-import path from "path";
-
-const ZIP_CODES_GEO_JSON = JSON.parse(
-    fs.readFileSync(path.resolve("data/ALZipCodes.json"), "utf8")
-);
-
-type ZipCodeFeature = {
-    properties: {
-        ZCTA5CE10?: string;
-        GEOID10?: string;
-    };
-    geometry: {
-        type: "Polygon" | "MultiPolygon";
-        coordinates: number[][][] | number[][][][];
-    };
-};
+import zipCodes from "../../../../../data/ALZipCodes.json";
 
 /**
  * Generates a GeoJSON object for the given service areas (zip codes).
@@ -27,7 +11,7 @@ type ZipCodeFeature = {
 export default function generateZipCodeGeoJson(
     serviceAreas: Set<string>
 ): CompanyInfo["serviceAreasGeoJson"] {
-    const filtered = ZIP_CODES_GEO_JSON.features.filter((feature: ZipCodeFeature) => {
+    const filtered = zipCodes.features.filter((feature) => {
         const zipCode = feature.properties.ZCTA5CE10 || feature.properties.GEOID10;
         if (!zipCode) return false;
         return serviceAreas.has(zipCode);
@@ -41,11 +25,11 @@ export default function generateZipCodeGeoJson(
     let minLatitude = Infinity;
     let maxLatitude = -Infinity;
 
-    filtered.forEach((feature: ZipCodeFeature) => {
+    filtered.forEach((feature) => {
         const coords: number[][] =
-            feature.geometry.type === "MultiPolygon"
-                ? (feature.geometry.coordinates as number[][][][]).flat(2)
-                : (feature.geometry.coordinates as number[][][]).flat(1);
+            feature.geometry?.type === "MultiPolygon"
+                ? (feature.geometry?.coordinates as number[][][][]).flat(2)
+                : (feature.geometry?.coordinates as number[][][]).flat(1);
 
         coords.forEach(([longitude, latitude]) => {
             if (longitude < minLongitude) minLongitude = longitude;
