@@ -1,9 +1,9 @@
 <script lang="ts">
     import { getUserContext } from "./UserContext";
     import Logo from "#lib/assets/Logo.png";
-    import { goto } from "$app/navigation";
     import { resolve } from "$app/paths";
     import { page } from "$app/state";
+    import Icon from "#lib/components/Icon.svelte";
 
     const user = getUserContext();
 </script>
@@ -20,17 +20,16 @@
             </p>
         </div>
 
-        {#if !page.url.pathname.endsWith("/home")}
-            <a class="button-link y-center x-center" href={resolve("/admin/(protected)/(index)")}
-                >Return to home</a
-            >
-        {/if}
+        <div class="flex-center gap-2">
+            {#if !page.url.pathname.endsWith("/home")}
+                <a class="button-primary tiny icon" href={resolve("/admin/(protected)/(index)")}>
+                    <Icon icon="Home" />
+                </a>
+            {/if}
 
-        <button
-            class="button-attention tiny"
-            onclick={async () => {
-                goto(resolve("/admin/(protected)/sign-out"));
-            }}>Sign Out</button
-        >
+            <a class="button-attention tiny" href={resolve("/admin/(protected)/sign-out")}
+                >Sign Out</a
+            >
+        </div>
     </div>
 </header>

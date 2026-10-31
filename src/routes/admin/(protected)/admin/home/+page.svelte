@@ -52,7 +52,7 @@
     <title>Admin Home | Attention to Detail Cleaning Company</title>
 </svelte:head>
 
-<div class="flex flex-col gap-y-8">
+<div class="flex flex-col gap-y-12">
     <Analytics trafficSources={data.trafficSources} marketingCampaigns={data.marketingCampaigns} />
 
     <ActionsList actions={CUSTOMER_SUPPORT_ACTIONS}>
@@ -61,7 +61,7 @@
         {/snippet}
 
         {#snippet Subtitle()}
-            Some people def need help
+            Manage inquiries
         {/snippet}
     </ActionsList>
 
@@ -71,17 +71,17 @@
         {/snippet}
 
         {#snippet Subtitle()}
-            Relates to marketing and website traffic
+            Manage marketing metrics and website traffic
         {/snippet}
     </ActionsList>
 
     <ActionsList actions={COMPANY_INFO_ACTIONS}>
         {#snippet Title()}
-            Company Info
+            Company Details
         {/snippet}
 
         {#snippet Subtitle()}
-            For Company Info
+            Update business details such as phone #, email, and service areas
         {/snippet}
     </ActionsList>
 
@@ -91,7 +91,7 @@
         {/snippet}
 
         {#snippet Subtitle()}
-            For staff
+            Manage staff profiles
         {/snippet}
     </ActionsList>
 </div>
@@ -100,10 +100,10 @@
     @reference "../../../../layout.css";
 
     :global(section) {
-        @apply relative w-full py-20 md:py-2;
+        @apply relative w-full;
 
         :global(.section-title) {
-            @apply mb-6 w-full gap-y-3;
+            @apply mb-4 w-full gap-y-3;
 
             & h2.title {
                 @apply max-w-2xl text-3xl font-bold text-title sm:text-4xl;

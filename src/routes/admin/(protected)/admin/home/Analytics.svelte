@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { BarChart, defaultChartPadding } from "layerchart";
+    import { BarChart } from "layerchart";
     import type { PageServerData } from "./$types";
     import { scaleBand } from "d3-scale";
 
@@ -20,7 +20,7 @@
 
     <div class="relative">
         {#if trafficSources.length === 0}
-            <p class="y-center x-center">No analytics data available.</p>
+            <p class="y-center x-center w-full text-center">No analytics data available.</p>
         {/if}
 
         <BarChart
@@ -38,7 +38,6 @@
             props={{
                 yAxis: { format: "integer" },
             }}
-            padding={defaultChartPadding({ left: 35, top: 25, right: 25, bottom: 35 })}
             height={300}
             legend
         />
