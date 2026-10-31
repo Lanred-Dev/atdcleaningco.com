@@ -25,6 +25,8 @@
     });
 
     afterNavigate(() => {
+        if (document.scrollingElement) document.scrollingElement.scrollTop = 0;
+
         ViewportContext.isNavigating = false;
     });
 </script>
@@ -32,8 +34,8 @@
 <svelte:body style:overflow={ViewportContext.isNavigating ? "hidden" : ""} />
 
 {#if ViewportContext.isNavigating}
-    <div class="pointer-events-none y-center x-center z-40 h-full w-full bg-page" transition:fade>
-        <div class="y-center x-center relative flex-center w-full">
+    <div class="pointer-events-none fixed inset-0 z-40 bg-page" transition:fade>
+        <div class="y-center x-center">
             <Loader class="size-12 stroke-black" />
         </div>
     </div>
