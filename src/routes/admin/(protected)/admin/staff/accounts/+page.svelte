@@ -101,7 +101,11 @@
                     <div class="mb-2 flex items-center justify-between">
                         <div>
                             <p class="text-xl font-semibold text-title">{staff.name}</p>
-                            <p class="text-muted">{staff.email}</p>
+
+                            <div class="flex items-center gap-2">
+                                <p class="text-muted">{staff.email}</p>
+                                <p class="text-muted">{staff.role}</p>
+                            </div>
                         </div>
 
                         <div class="button-row">
